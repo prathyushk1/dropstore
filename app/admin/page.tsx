@@ -24,47 +24,47 @@ const topProducts = [
 
 export default function AdminDashboard() {
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       <div>
-        <h1 className="text-3xl font-bold">Dashboard</h1>
-        <p className="text-muted-foreground">Overview of your store performance</p>
+        <h1 className="text-2xl sm:text-3xl font-bold">Dashboard</h1>
+        <p className="text-sm sm:text-base text-muted-foreground">Overview of your store performance</p>
       </div>
 
       {/* Stats Grid */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-3 sm:gap-4 grid-cols-2 lg:grid-cols-4">
         {stats.map((stat) => (
           <Card key={stat.label}>
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">
+            <CardHeader className="flex flex-row items-center justify-between pb-2 p-3 sm:p-6 sm:pb-2">
+              <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground">
                 {stat.label}
               </CardTitle>
-              <stat.icon className="h-4 w-4 text-muted-foreground" />
+              <stat.icon className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
             </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stat.value}</div>
-              <p className="text-xs text-green-600">{stat.change} from last month</p>
+            <CardContent className="p-3 sm:p-6 pt-0">
+              <div className="text-lg sm:text-2xl font-bold">{stat.value}</div>
+              <p className="text-[10px] sm:text-xs text-green-600">{stat.change} from last month</p>
             </CardContent>
           </Card>
         ))}
       </div>
 
-      <div className="grid gap-8 md:grid-cols-2">
+      <div className="grid gap-6 sm:gap-8 md:grid-cols-2">
         {/* Recent Orders */}
         <Card>
-          <CardHeader>
-            <CardTitle>Recent Orders</CardTitle>
+          <CardHeader className="p-4 sm:p-6">
+            <CardTitle className="text-base sm:text-lg">Recent Orders</CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
+          <CardContent className="p-4 sm:p-6 pt-0">
+            <div className="space-y-3 sm:space-y-4">
               {recentOrders.map((order) => (
-                <div key={order.id} className="flex items-center justify-between">
-                  <div>
-                    <div className="font-semibold">{order.id}</div>
-                    <div className="text-sm text-muted-foreground">{order.customer}</div>
+                <div key={order.id} className="flex items-center justify-between gap-2">
+                  <div className="min-w-0 flex-1">
+                    <div className="font-semibold text-sm sm:text-base truncate">{order.id}</div>
+                    <div className="text-xs sm:text-sm text-muted-foreground truncate">{order.customer}</div>
                   </div>
-                  <div className="text-right">
-                    <div className="font-semibold">₹{order.total}</div>
-                    <div className="text-sm text-muted-foreground">{order.status}</div>
+                  <div className="text-right flex-shrink-0">
+                    <div className="font-semibold text-sm sm:text-base">₹{order.total}</div>
+                    <div className="text-xs sm:text-sm text-muted-foreground">{order.status}</div>
                   </div>
                 </div>
               ))}
@@ -74,18 +74,18 @@ export default function AdminDashboard() {
 
         {/* Top Products */}
         <Card>
-          <CardHeader>
-            <CardTitle>Top Products</CardTitle>
+          <CardHeader className="p-4 sm:p-6">
+            <CardTitle className="text-base sm:text-lg">Top Products</CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
+          <CardContent className="p-4 sm:p-6 pt-0">
+            <div className="space-y-3 sm:space-y-4">
               {topProducts.map((product, i) => (
-                <div key={i} className="flex items-center justify-between">
-                  <div>
-                    <div className="font-semibold">{product.name}</div>
-                    <div className="text-sm text-muted-foreground">{product.sales} sales</div>
+                <div key={i} className="flex items-center justify-between gap-2">
+                  <div className="min-w-0 flex-1">
+                    <div className="font-semibold text-sm sm:text-base truncate">{product.name}</div>
+                    <div className="text-xs sm:text-sm text-muted-foreground">{product.sales} sales</div>
                   </div>
-                  <div className="font-semibold">₹{product.revenue}</div>
+                  <div className="font-semibold text-sm sm:text-base flex-shrink-0">₹{product.revenue}</div>
                 </div>
               ))}
             </div>
