@@ -161,3 +161,15 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
     </Card>
   )
 }
+
+// Desktop sidebar version (hidden on mobile)
+export function DesktopFilters({ categories }: ProductFiltersProps) {
+  return (
+    <aside className="hidden lg:block w-64 shrink-0">
+      <ProductFilters categories={categories} />
+    </aside>
+  )
+}
+
+// Explicit exports for better compatibility
+export { ProductFilters as default }
