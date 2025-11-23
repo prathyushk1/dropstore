@@ -1,9 +1,12 @@
+"use client"
+
 import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { ArrowRight, TrendingUp, Star, Zap, Shield, Truck, HeadphonesIcon, Sparkles, ArrowUpRight } from "lucide-react"
+import { ArrowRight, Star, ArrowUpRight } from "lucide-react"
+import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel"
 
 // Dummy data
 const trendingProducts = [
@@ -23,118 +26,81 @@ const categories = [
 export default function HomePage() {
   return (
     <div className="flex flex-col min-h-screen bg-background">
-      {/* Hero Section - Immersive & Dynamic */}
-      <section className="relative min-h-[70vh] md:min-h-[80vh] flex items-center justify-center overflow-hidden bg-background pt-16">
-        {/* Background Gradients */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-[-20%] right-[-10%] w-[400px] md:w-[800px] h-[400px] md:h-[800px] bg-primary/20 rounded-full blur-[80px] md:blur-[120px] animate-pulse" />
-          <div className="absolute bottom-[-20%] left-[-10%] w-[300px] md:w-[600px] h-[300px] md:h-[600px] bg-purple-500/20 rounded-full blur-[60px] md:blur-[100px] animate-pulse delay-1000" />
-        </div>
-
-        <div className="container relative z-10 px-4 md:px-6">
-          <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center">
-            <div className="space-y-6 md:space-y-8 text-center lg:text-left">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 backdrop-blur-sm animate-fade-in">
-                <Sparkles className="h-4 w-4 text-primary" />
-                <span className="text-sm font-medium text-primary">New Collection 2024</span>
-              </div>
-
-              <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.1] animate-fade-in-up">
-                Discover <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-600">Extraordinary</span> Products
-              </h1>
-
-              <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto lg:mx-0 animate-fade-in-up animation-delay-200">
-                Elevate your lifestyle with our curated selection of premium items. Quality meets affordability in every purchase.
-              </p>
-
-              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start animate-fade-in-up animation-delay-400">
-                <Button size="lg" className="h-12 md:h-14 px-8 text-lg rounded-full bg-primary hover:bg-primary/90 shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all hover:scale-105" asChild>
-                  <Link href="/products">
-                    Start Shopping <ArrowRight className="ml-2 h-5 w-5" />
-                  </Link>
-                </Button>
-                <Button size="lg" variant="outline" className="h-12 md:h-14 px-8 text-lg rounded-full border-2 hover:bg-secondary/50 backdrop-blur-sm transition-all hover:scale-105" asChild>
-                  <Link href="/products?featured=true">
-                    View Deals
-                  </Link>
-                </Button>
-              </div>
-
-              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 md:gap-8 pt-4 text-muted-foreground animate-fade-in-up animation-delay-600">
-                <div className="flex items-center gap-2">
-                  <div className="p-2 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400">
-                    <Truck className="h-4 w-4 md:h-5 md:w-5" />
-                  </div>
-                  <span className="text-sm font-medium">Free Shipping</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="p-2 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400">
-                    <Shield className="h-4 w-4 md:h-5 md:w-5" />
-                  </div>
-                  <span className="text-sm font-medium">Secure Payment</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Hero Image/Visual */}
-            <div className="relative h-[300px] md:h-[600px] w-full hidden md:block animate-scale-in">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-purple-500/10 rounded-[3rem] rotate-3 backdrop-blur-sm border border-white/10" />
-              <div className="absolute inset-0 bg-card rounded-[3rem] -rotate-3 shadow-2xl overflow-hidden border border-border/50">
-                <Image
-                  src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=800&q=80"
-                  alt="Hero Showcase"
-                  fill
-                  className="object-cover hover:scale-105 transition-transform duration-700"
-                  priority
-                />
-
-                {/* Floating Cards */}
-                <div className="absolute top-8 right-8 p-4 glass-panel rounded-2xl animate-float">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-yellow-100 rounded-full text-yellow-600">
-                      <Star className="h-5 w-5 fill-current" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-bold">Top Rated</p>
-                      <p className="text-xs text-muted-foreground">4.9/5 Stars</p>
+      {/* Hero Section - Carousel */}
+      <section className="relative bg-background pt-4 md:pt-8">
+        <div className="container px-4 md:px-6">
+          <Carousel className="w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-xl" opts={{ loop: true }}>
+            <CarouselContent>
+              {[
+                "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=1200&q=80",
+                "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&q=80",
+                "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1200&q=80"
+              ].map((src, index) => (
+                <CarouselItem key={index}>
+                  <div className="relative aspect-[2/1] md:aspect-[2.5/1] w-full">
+                    <Image
+                      src={src}
+                      alt={`Banner ${index + 1}`}
+                      fill
+                      className="object-cover"
+                      priority={index === 0}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent flex items-center p-6 md:p-12">
+                      <div className="max-w-xl space-y-4">
+                        <Badge className="bg-primary text-white border-0 px-3 py-1 text-sm">
+                          New Arrival
+                        </Badge>
+                        <h2 className="text-3xl md:text-5xl font-bold text-white tracking-tight">
+                          Summer Collection 2024
+                        </h2>
+                        <p className="text-white/90 text-lg md:text-xl max-w-md hidden md:block">
+                          Discover the latest trends in fashion and electronics. Up to 50% off on selected items.
+                        </p>
+                        <Button size="lg" className="rounded-full bg-white text-black hover:bg-white/90 font-bold" asChild>
+                          <Link href="/products">Shop Now</Link>
+                        </Button>
+                      </div>
                     </div>
                   </div>
-                </div>
-
-                <div className="absolute bottom-8 left-8 p-4 glass-panel rounded-2xl animate-float animation-delay-1000">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-red-100 rounded-full text-red-600">
-                      <Zap className="h-5 w-5 fill-current" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-bold">Fast Delivery</p>
-                      <p className="text-xs text-muted-foreground">2-3 Days</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
         </div>
       </section>
 
-      {/* Categories Section - Horizontal Scroll on Mobile */}
-      <section className="py-12 md:py-20 container px-4 md:px-6">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-8 md:mb-12 gap-4">
-          <div>
-            <h2 className="text-2xl md:text-4xl font-bold mb-2">Shop by Category</h2>
-            <p className="text-muted-foreground text-sm md:text-base">Explore our wide range of collections</p>
-          </div>
-          <Button variant="ghost" className="group hidden md:inline-flex" asChild>
-            <Link href="/categories">
-              View All Categories <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </Link>
-          </Button>
+      {/* Categories Section - Circular on Mobile */}
+      <section className="py-8 md:py-16 container px-4 md:px-6">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-xl md:text-3xl font-bold">Shop by Category</h2>
+          <Link href="/categories" className="text-sm text-primary font-medium hover:underline">
+            View All
+          </Link>
         </div>
 
-        <div className="flex overflow-x-auto pb-6 -mx-4 px-4 md:grid md:grid-cols-4 md:gap-6 md:overflow-visible md:pb-0 md:mx-0 md:px-0 snap-x snap-mandatory hide-scrollbar">
+        {/* Mobile: Circular Scroll */}
+        <div className="flex md:hidden overflow-x-auto pb-4 -mx-4 px-4 gap-6 hide-scrollbar">
           {categories.map((category) => (
-            <Link key={category.slug} href={`/products?category=${category.slug}`} className="group relative overflow-hidden rounded-3xl aspect-[4/5] min-w-[200px] md:min-w-0 mr-4 md:mr-0 snap-center shrink-0">
+            <Link key={category.slug} href={`/products?category=${category.slug}`} className="flex flex-col items-center gap-2 min-w-[72px]">
+              <div className="w-18 h-18 rounded-full p-[2px] bg-gradient-to-br from-purple-500 to-pink-500">
+                <div className="w-full h-full rounded-full overflow-hidden border-2 border-white relative aspect-square">
+                  <Image
+                    src={category.image}
+                    alt={category.name}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              </div>
+              <span className="text-xs font-medium text-center line-clamp-1">{category.name}</span>
+            </Link>
+          ))}
+        </div>
+
+        {/* Desktop: Grid Cards */}
+        <div className="hidden md:grid grid-cols-4 gap-6">
+          {categories.map((category) => (
+            <Link key={category.slug} href={`/products?category=${category.slug}`} className="group relative overflow-hidden rounded-3xl aspect-[4/5]">
               <Image
                 src={category.image}
                 alt={category.name}
@@ -151,12 +117,6 @@ export default function HomePage() {
               </div>
             </Link>
           ))}
-        </div>
-
-        <div className="mt-4 text-center md:hidden">
-          <Button variant="link" asChild>
-            <Link href="/categories">View All Categories</Link>
-          </Button>
         </div>
       </section>
 
@@ -263,3 +223,4 @@ export default function HomePage() {
     </div>
   )
 }
+
