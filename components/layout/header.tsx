@@ -1,4 +1,4 @@
-'use client'
+"use client"
 
 import Link from "next/link"
 import { ShoppingCart, User, Search, Heart, Sparkles, Menu } from "lucide-react"
@@ -24,15 +24,15 @@ export function Header() {
       {/* Main Header */}
       <div className="container flex h-16 items-center gap-2 sm:gap-4 px-4">
         <div className="flex items-center gap-2 sm:gap-4">
-          <Button 
-            variant="ghost" 
-            size="icon" 
+          <Button
+            variant="ghost"
+            size="icon"
             className="md:hidden"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             <Menu className="h-5 w-5" />
           </Button>
-          
+
           <Link href="/" className="flex items-center space-x-1 sm:space-x-2 group">
             <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-purple-600 to-pink-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-shadow">
               <span className="text-white font-bold text-lg sm:text-xl">S</span>
@@ -42,7 +42,7 @@ export function Header() {
             </span>
           </Link>
         </div>
-        
+
         <div className="flex flex-1 items-center justify-end gap-2 sm:gap-4">
           <div className="hidden sm:block flex-1 max-w-md">
             <div className="relative group">
@@ -54,7 +54,7 @@ export function Header() {
               />
             </div>
           </div>
-          
+
           <nav className="flex items-center space-x-0.5 sm:space-x-1">
             <Button variant="ghost" size="icon" className="h-9 w-9 sm:h-10 sm:w-10 relative hover:bg-purple-50 hover:text-purple-600 rounded-xl" asChild>
               <Link href="/account/wishlist">
@@ -92,7 +92,7 @@ export function Header() {
           />
         </div>
       </div>
-      
+
       {/* Desktop Navigation */}
       <div className="hidden md:block border-t bg-gradient-to-r from-purple-50/50 to-pink-50/50">
         <div className="container">

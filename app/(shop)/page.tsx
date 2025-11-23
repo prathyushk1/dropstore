@@ -3,7 +3,7 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { ArrowRight, TrendingUp, Star, Zap, Shield, Truck, HeadphonesIcon, Sparkles } from "lucide-react"
+import { ArrowRight, TrendingUp, Star, Zap, Shield, Truck, HeadphonesIcon, Sparkles, ArrowUpRight } from "lucide-react"
 
 // Dummy data
 const trendingProducts = [
@@ -14,271 +14,244 @@ const trendingProducts = [
 ]
 
 const categories = [
-  { name: 'Electronics', slug: 'electronics', image: 'https://images.unsplash.com/photo-1498049794561-7780e7231661?w=400' },
-  { name: 'Fashion', slug: 'fashion', image: 'https://images.unsplash.com/photo-1445205170230-053b83016050?w=400' },
-  { name: 'Home & Living', slug: 'home', image: 'https://images.unsplash.com/photo-1556911220-bff31c812dba?w=400' },
-  { name: 'Sports', slug: 'sports', image: 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=400' },
+  { name: 'Electronics', slug: 'electronics', image: 'https://images.unsplash.com/photo-1498049794561-7780e7231661?w=400', color: 'from-blue-500 to-cyan-500' },
+  { name: 'Fashion', slug: 'fashion', image: 'https://images.unsplash.com/photo-1445205170230-053b83016050?w=400', color: 'from-pink-500 to-rose-500' },
+  { name: 'Home & Living', slug: 'home', image: 'https://images.unsplash.com/photo-1556911220-bff31c812dba?w=400', color: 'from-amber-500 to-orange-500' },
+  { name: 'Sports', slug: 'sports', image: 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=400', color: 'from-emerald-500 to-green-500' },
 ]
 
 export default function HomePage() {
   return (
-    <div className="flex flex-col">
-      {/* Hero Section - Enhanced */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500">
-        {/* Animated Background Elements */}
+    <div className="flex flex-col min-h-screen bg-background">
+      {/* Hero Section - Immersive & Dynamic */}
+      <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden bg-background pt-16">
+        {/* Background Gradients */}
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-40 -right-40 w-80 h-80 bg-white/10 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-white/10 rounded-full blur-3xl animate-pulse delay-700"></div>
+          <div className="absolute top-[-20%] right-[-10%] w-[800px] h-[800px] bg-primary/20 rounded-full blur-[120px] animate-pulse" />
+          <div className="absolute bottom-[-20%] left-[-10%] w-[600px] h-[600px] bg-purple-500/20 rounded-full blur-[100px] animate-pulse delay-1000" />
         </div>
-        
-        <div className="container relative py-12 sm:py-20 md:py-32 px-4">
-          <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-white/20 backdrop-blur-sm rounded-full mb-4 sm:mb-6 animate-fade-in">
-              <Sparkles className="h-3 w-3 sm:h-4 sm:w-4 text-yellow-300" />
-              <span className="text-xs sm:text-sm font-medium text-white">New Arrivals Every Week</span>
-            </div>
-            
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-extrabold tracking-tight mb-4 sm:mb-6 animate-fade-in-up">
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-100">
-                Discover Amazing
-              </span>
-              <br />
-              <span className="text-white">Products at Unbeatable Prices</span>
-            </h1>
-            
-            <p className="text-base sm:text-lg md:text-xl mb-6 sm:mb-10 text-blue-50 max-w-2xl animate-fade-in-up animation-delay-200">
-              Shop the latest trending products with fast shipping and hassle-free returns. Quality guaranteed with 100% satisfaction.
-            </p>
-            
-            <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 animate-fade-in-up animation-delay-400">
-              <Button size="lg" className="w-full sm:w-auto bg-white text-purple-600 hover:bg-blue-50 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105" asChild>
-                <Link href="/products">
-                  <Zap className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
-                  Shop Now
-                  <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
-                </Link>
-              </Button>
-              <Button size="lg" variant="outline" className="w-full sm:w-auto bg-white/10 backdrop-blur-sm text-white border-white/30 hover:bg-white/20 shadow-lg" asChild>
-                <Link href="/products?featured=true">
-                  View Hot Deals 🔥
-                </Link>
-              </Button>
+
+        <div className="container relative z-10 px-4 md:px-6">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="space-y-8 text-center lg:text-left">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 backdrop-blur-sm animate-fade-in">
+                <Sparkles className="h-4 w-4 text-primary" />
+                <span className="text-sm font-medium text-primary">New Collection 2024</span>
+              </div>
+
+              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.1] animate-fade-in-up">
+                Discover <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-600">Extraordinary</span> Products
+              </h1>
+
+              <p className="text-xl text-muted-foreground max-w-2xl mx-auto lg:mx-0 animate-fade-in-up animation-delay-200">
+                Elevate your lifestyle with our curated selection of premium items. Quality meets affordability in every purchase.
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start animate-fade-in-up animation-delay-400">
+                <Button size="lg" className="h-14 px-8 text-lg rounded-full bg-primary hover:bg-primary/90 shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all hover:scale-105" asChild>
+                  <Link href="/products">
+                    Start Shopping <ArrowRight className="ml-2 h-5 w-5" />
+                  </Link>
+                </Button>
+                <Button size="lg" variant="outline" className="h-14 px-8 text-lg rounded-full border-2 hover:bg-secondary/50 backdrop-blur-sm transition-all hover:scale-105" asChild>
+                  <Link href="/products?featured=true">
+                    View Deals
+                  </Link>
+                </Button>
+              </div>
+
+              <div className="flex items-center justify-center lg:justify-start gap-8 pt-4 text-muted-foreground animate-fade-in-up animation-delay-600">
+                <div className="flex items-center gap-2">
+                  <div className="p-2 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400">
+                    <Truck className="h-5 w-5" />
+                  </div>
+                  <span className="text-sm font-medium">Free Shipping</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="p-2 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400">
+                    <Shield className="h-5 w-5" />
+                  </div>
+                  <span className="text-sm font-medium">Secure Payment</span>
+                </div>
+              </div>
             </div>
 
-            {/* Trust Badges */}
-            <div className="flex flex-wrap gap-4 sm:gap-6 mt-8 sm:mt-12 animate-fade-in-up animation-delay-600">
-              <div className="flex items-center gap-2 text-white/90">
-                <Shield className="h-4 w-4 sm:h-5 sm:w-5" />
-                <span className="text-xs sm:text-sm">Secure Payment</span>
-              </div>
-              <div className="flex items-center gap-2 text-white/90">
-                <Truck className="h-4 w-4 sm:h-5 sm:w-5" />
-                <span className="text-xs sm:text-sm">Free Shipping</span>
-              </div>
-              <div className="flex items-center gap-2 text-white/90">
-                <HeadphonesIcon className="h-4 w-4 sm:h-5 sm:w-5" />
-                <span className="text-xs sm:text-sm">24/7 Support</span>
+            {/* Hero Image/Visual */}
+            <div className="relative lg:h-[600px] w-full hidden lg:block animate-scale-in">
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-purple-500/10 rounded-[3rem] rotate-3 backdrop-blur-sm border border-white/10" />
+              <div className="absolute inset-0 bg-card rounded-[3rem] -rotate-3 shadow-2xl overflow-hidden border border-border/50">
+                <Image
+                  src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=800&q=80"
+                  alt="Hero Showcase"
+                  fill
+                  className="object-cover hover:scale-105 transition-transform duration-700"
+                  priority
+                />
+
+                {/* Floating Cards */}
+                <div className="absolute top-8 right-8 p-4 glass-panel rounded-2xl animate-float">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-yellow-100 rounded-full text-yellow-600">
+                      <Star className="h-5 w-5 fill-current" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-bold">Top Rated</p>
+                      <p className="text-xs text-muted-foreground">4.9/5 Stars</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="absolute bottom-8 left-8 p-4 glass-panel rounded-2xl animate-float animation-delay-1000">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-red-100 rounded-full text-red-600">
+                      <Zap className="h-5 w-5 fill-current" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-bold">Fast Delivery</p>
+                      <p className="text-xs text-muted-foreground">2-3 Days</p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-
-        {/* Wave Divider */}
-        <div className="absolute bottom-0 left-0 right-0">
-          <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
-            <path d="M0 120L60 105C120 90 240 60 360 45C480 30 600 30 720 37.5C840 45 960 60 1080 67.5C1200 75 1320 75 1380 75L1440 75V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="white"/>
-          </svg>
-        </div>
       </section>
 
-      {/* Categories - Enhanced */}
-      <section className="container py-12 sm:py-16 md:py-20 px-4">
-        <div className="text-center mb-8 sm:mb-12">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 sm:mb-4 bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-pink-600">
-            Shop by Category
-          </h2>
-          <p className="text-muted-foreground text-sm sm:text-base md:text-lg">Explore our curated collections</p>
+      {/* Categories Section */}
+      <section className="py-20 container px-4 md:px-6">
+        <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
+          <div>
+            <h2 className="text-3xl md:text-4xl font-bold mb-2">Shop by Category</h2>
+            <p className="text-muted-foreground">Explore our wide range of collections</p>
+          </div>
+          <Button variant="ghost" className="group" asChild>
+            <Link href="/categories">
+              View All Categories <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Link>
+          </Button>
         </div>
-        
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
-          {categories.map((category, index) => (
-            <Link key={category.slug} href={`/products?category=${category.slug}`}>
-              <Card className="group overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 hover:border-purple-200">
-                <div className="aspect-square relative overflow-hidden">
-                  <Image
-                    src={category.image}
-                    alt={category.name}
-                    fill
-                    className="object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          {categories.map((category) => (
+            <Link key={category.slug} href={`/products?category=${category.slug}`} className="group relative overflow-hidden rounded-3xl aspect-[4/5]">
+              <Image
+                src={category.image}
+                alt={category.name}
+                fill
+                className="object-cover transition-transform duration-500 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
+              <div className="absolute bottom-0 left-0 right-0 p-6 translate-y-2 group-hover:translate-y-0 transition-transform">
+                <h3 className="text-xl font-bold text-white mb-2">{category.name}</h3>
+                <div className="flex items-center gap-2 text-white/80 text-sm opacity-0 group-hover:opacity-100 transition-opacity">
+                  <span>Shop Now</span>
+                  <ArrowUpRight className="h-4 w-4" />
                 </div>
-                <CardContent className="p-2 sm:p-3 md:p-4 text-center bg-gradient-to-br from-white to-purple-50 group-hover:from-purple-50 group-hover:to-pink-50 transition-colors duration-300">
-                  <h3 className="font-bold text-sm sm:text-base md:text-lg group-hover:text-purple-600 transition-colors">{category.name}</h3>
-                  <p className="text-xs text-muted-foreground mt-1 opacity-0 group-hover:opacity-100 transition-opacity hidden sm:block">
-                    Explore now →
-                  </p>
-                </CardContent>
-              </Card>
+              </div>
             </Link>
           ))}
         </div>
       </section>
 
-      {/* Trending Products - Enhanced */}
-      <section className="container py-12 sm:py-16 md:py-20 bg-gradient-to-b from-transparent to-purple-50/30 px-4">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 sm:mb-12 gap-4">
-          <div className="flex items-center gap-2 sm:gap-3">
-            <div className="p-2 sm:p-3 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl shadow-lg">
-              <TrendingUp className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
-            </div>
-            <div>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-orange-600 to-red-600">
-                Trending Now
-              </h2>
-              <p className="text-muted-foreground text-xs sm:text-sm md:text-base">Hot picks this week</p>
-            </div>
+      {/* Trending Products */}
+      <section className="py-20 bg-secondary/30">
+        <div className="container px-4 md:px-6">
+          <div className="text-center max-w-2xl mx-auto mb-16">
+            <Badge variant="secondary" className="mb-4 px-4 py-1 text-primary bg-primary/10 border-primary/20">Trending Now</Badge>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Popular Products</h2>
+            <p className="text-muted-foreground">Don't miss out on our best-selling items of the week.</p>
           </div>
-          <Button variant="outline" className="hidden md:flex border-2 hover:border-purple-300 hover:bg-purple-50" asChild>
-            <Link href="/products">
-              View All <ArrowRight className="ml-2 h-4 w-4" />
-            </Link>
-          </Button>
-        </div>
-        
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 md:gap-6">
-          {trendingProducts.map((product, index) => (
-            <Link key={product.id} href={`/products/${product.id}`}>
-              <Card className="group overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 h-full border-2 hover:border-purple-200">
-                <div className="aspect-square relative overflow-hidden bg-gray-100">
-                  {product.discount > 0 && (
-                    <Badge className="absolute top-2 right-2 sm:top-3 sm:right-3 bg-gradient-to-r from-red-500 to-pink-500 text-white border-0 shadow-lg z-10 animate-pulse text-xs">
-                      🔥 -{product.discount}%
-                    </Badge>
-                  )}
-                  <Image
-                    src={product.image}
-                    alt={product.name}
-                    fill
-                    className="object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  
-                  {/* Quick View Button */}
-                  <div className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 hidden sm:block">
-                    <Button size="sm" className="w-full bg-white text-purple-600 hover:bg-purple-50">
-                      Quick View
-                    </Button>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {trendingProducts.map((product) => (
+              <Link key={product.id} href={`/products/${product.id}`}>
+                <Card className="group border-0 bg-card/50 backdrop-blur-sm hover:bg-card transition-colors duration-300 overflow-hidden rounded-3xl shadow-sm hover:shadow-xl hover:-translate-y-2">
+                  <div className="relative aspect-square overflow-hidden bg-secondary/50">
+                    {product.discount > 0 && (
+                      <Badge className="absolute top-4 left-4 bg-red-500 hover:bg-red-600 text-white border-0 z-10">
+                        -{product.discount}%
+                      </Badge>
+                    )}
+                    <Image
+                      src={product.image}
+                      alt={product.name}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+
+                    {/* Quick Actions Overlay */}
+                    <div className="absolute inset-x-4 bottom-4 grid grid-cols-2 gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-4 group-hover:translate-y-0">
+                      <Button size="sm" className="bg-white text-black hover:bg-gray-100 w-full">
+                        Quick View
+                      </Button>
+                      <Button size="sm" className="w-full">
+                        Add to Cart
+                      </Button>
+                    </div>
                   </div>
-                </div>
-                
-                <CardContent className="p-3 sm:p-4 md:p-5">
-                  <h3 className="font-bold text-sm sm:text-base md:text-lg mb-2 line-clamp-2 group-hover:text-purple-600 transition-colors">
-                    {product.name}
-                  </h3>
-                  
-                  <div className="flex items-center gap-1 mb-2 sm:mb-3">
-                    {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        className={`h-3 w-3 sm:h-4 sm:w-4 ${
-                          i < Math.floor(product.rating)
-                            ? 'fill-yellow-400 text-yellow-400'
-                            : 'fill-gray-200 text-gray-200'
-                        }`}
-                      />
-                    ))}
-                    <span className="text-xs sm:text-sm text-muted-foreground ml-1">({product.rating})</span>
-                  </div>
-                  
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-baseline gap-1 sm:gap-2">
-                      <span className="text-lg sm:text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-pink-600">
-                        ₹{product.price}
-                      </span>
+
+                  <CardContent className="p-6">
+                    <div className="flex items-center gap-1 mb-2">
+                      <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                      <span className="text-sm font-medium">{product.rating}</span>
+                      <span className="text-sm text-muted-foreground">({Math.floor(Math.random() * 100) + 50})</span>
+                    </div>
+                    <h3 className="font-bold text-lg mb-2 line-clamp-1 group-hover:text-primary transition-colors">{product.name}</h3>
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-xl font-bold text-primary">₹{product.price}</span>
                       {product.discount > 0 && (
-                        <span className="text-xs sm:text-sm text-muted-foreground line-through">
+                        <span className="text-sm text-muted-foreground line-through">
                           ₹{Math.round(product.price / (1 - product.discount / 100))}
                         </span>
                       )}
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section className="container py-12 sm:py-16 md:py-20 px-4">
-        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
-          <Card className="text-center p-4 sm:p-6 md:p-8 border-2 hover:border-purple-200 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-            <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-green-400 to-emerald-500 rounded-2xl flex items-center justify-center mx-auto mb-3 sm:mb-4 shadow-lg">
-              <Shield className="h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 text-white" />
-            </div>
-            <h3 className="text-base sm:text-lg md:text-xl font-bold mb-2">Secure Payment</h3>
-            <p className="text-muted-foreground text-xs sm:text-sm md:text-base">100% secure transactions with encrypted payment gateway</p>
-          </Card>
-          
-          <Card className="text-center p-4 sm:p-6 md:p-8 border-2 hover:border-purple-200 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-            <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-2xl flex items-center justify-center mx-auto mb-3 sm:mb-4 shadow-lg">
-              <Truck className="h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 text-white" />
-            </div>
-            <h3 className="text-base sm:text-lg md:text-xl font-bold mb-2">Fast Delivery</h3>
-            <p className="text-muted-foreground text-xs sm:text-sm md:text-base">Free shipping on orders above ₹500 with express delivery</p>
-          </Card>
-          
-          <Card className="text-center p-4 sm:p-6 md:p-8 border-2 hover:border-purple-200 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 sm:col-span-2 md:col-span-1">
-            <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-purple-400 to-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-3 sm:mb-4 shadow-lg">
-              <HeadphonesIcon className="h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 text-white" />
-            </div>
-            <h3 className="text-base sm:text-lg md:text-xl font-bold mb-2">24/7 Support</h3>
-            <p className="text-muted-foreground text-xs sm:text-sm md:text-base">Dedicated customer support team always ready to help</p>
-          </Card>
-        </div>
-      </section>
-
-      {/* Newsletter - Enhanced */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-purple-600 via-pink-500 to-orange-500 py-12 sm:py-16 md:py-20">
-        {/* Animated Background */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-white/10 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-white/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        </div>
-        
-        <div className="container max-w-3xl text-center relative z-10 px-4">
-          <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-white/20 backdrop-blur-sm rounded-full mb-4 sm:mb-6">
-            <Sparkles className="h-3 w-3 sm:h-4 sm:w-4 text-yellow-300" />
-            <span className="text-xs sm:text-sm font-medium text-white">Exclusive Offers</span>
+                  </CardContent>
+                </Card>
+              </Link>
+            ))}
           </div>
-          
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 text-white">
-            Get 20% Off Your First Order!
-          </h2>
-          <p className="text-sm sm:text-base md:text-lg lg:text-xl text-white/90 mb-6 sm:mb-8 md:mb-10 px-4">
-            Subscribe to our newsletter and get exclusive deals, new arrivals, and special offers delivered to your inbox.
-          </p>
-          
-          <form className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className="flex h-11 sm:h-12 w-full rounded-xl border-0 bg-white/95 backdrop-blur-sm px-4 py-2 text-sm shadow-xl focus:outline-none focus:ring-2 focus:ring-white"
-            />
-            <Button 
-              type="submit" 
-              size="lg"
-              className="h-11 sm:h-12 bg-white text-purple-600 hover:bg-blue-50 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 whitespace-nowrap"
-            >
-              <Zap className="mr-2 h-4 w-4" />
-              Subscribe Now
+
+          <div className="mt-12 text-center">
+            <Button size="lg" variant="outline" className="rounded-full px-8 border-2" asChild>
+              <Link href="/products">View All Products</Link>
             </Button>
-          </form>
-          
-          <p className="text-white/70 text-xs sm:text-sm mt-4 sm:mt-6">
-            🎁 Join 10,000+ happy subscribers • Unsubscribe anytime
-          </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Newsletter Section */}
+      <section className="py-20 container px-4 md:px-6">
+        <div className="relative rounded-[3rem] overflow-hidden bg-primary px-6 py-16 md:px-16 md:py-24 text-center">
+          {/* Background Pattern */}
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute -top-24 -left-24 w-96 h-96 rounded-full bg-white blur-3xl" />
+            <div className="absolute -bottom-24 -right-24 w-96 h-96 rounded-full bg-white blur-3xl" />
+          </div>
+
+          <div className="relative z-10 max-w-2xl mx-auto space-y-8">
+            <h2 className="text-3xl md:text-5xl font-bold text-white tracking-tight">
+              Join Our Community
+            </h2>
+            <p className="text-lg text-primary-foreground/80">
+              Subscribe to our newsletter and get <span className="font-bold text-white">20% off</span> your first order, plus exclusive access to new drops.
+            </p>
+
+            <form className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+              <input
+                type="email"
+                placeholder="Enter your email address"
+                className="flex-1 h-12 px-6 rounded-full bg-white/10 border border-white/20 text-white placeholder:text-white/60 focus:outline-none focus:ring-2 focus:ring-white/50 backdrop-blur-sm"
+              />
+              <Button size="lg" className="h-12 px-8 rounded-full bg-white text-primary hover:bg-white/90 font-bold shadow-lg">
+                Subscribe
+              </Button>
+            </form>
+
+            <p className="text-sm text-primary-foreground/60">
+              By subscribing, you agree to our Terms & Conditions and Privacy Policy.
+            </p>
+          </div>
         </div>
       </section>
     </div>
