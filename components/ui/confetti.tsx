@@ -1,39 +1,47 @@
 "use client"
 
 import { useEffect } from "react"
-import confetti from "canvas-confetti"
 
 export const Confetti = () => {
     useEffect(() => {
-        const duration = 5 * 1000
-        const animationEnd = Date.now() + duration
-        const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 }
+        // Only run in browser environment
+        if (typeof window === 'undefined') return;
 
-        const randomInRange = (min: number, max: number) => {
-            return Math.random() * (max - min) + min
-        }
+        const runConfetti = async () => {
+            const confetti = (await import("canvas-confetti")).default
 
-        const interval: any = setInterval(function () {
-            const timeLeft = animationEnd - Date.now()
+            const duration = 5 * 1000
+            const animationEnd = Date.now() + duration
+            const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 }
 
-            if (timeLeft <= 0) {
-                return clearInterval(interval)
+            const randomInRange = (min: number, max: number) => {
+                return Math.random() * (max - min) + min
             }
 
-            const particleCount = 50 * (timeLeft / duration)
-            confetti({
-                ...defaults,
-                particleCount,
-                origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
-            })
-            confetti({
-                ...defaults,
-                particleCount,
-                origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
-            })
-        }, 250)
+            const interval: any = setInterval(function () {
+                const timeLeft = animationEnd - Date.now()
 
-        return () => clearInterval(interval)
+                if (timeLeft <= 0) {
+                    return clearInterval(interval)
+                }
+
+                const particleCount = 50 * (timeLeft / duration)
+                confetti({
+                    ...defaults,
+                    particleCount,
+                    origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
+                })
+                confetti({
+                    ...defaults,
+                    particleCount,
+                    origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
+                })
+            }, 250)
+
+            return () => clearInterval(interval)
+        }
+
+        runConfetti()
     }, [])
 
     return null
