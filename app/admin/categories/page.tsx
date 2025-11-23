@@ -1,5 +1,7 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
+
+export const dynamic = 'force-dynamic'
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Plus, Edit, Trash2 } from "lucide-react"

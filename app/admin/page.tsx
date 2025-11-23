@@ -4,9 +4,11 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { DollarSign, ShoppingCart, Package, Users, Activity } from "lucide-react"
 import { RecentActivity } from "@/components/admin/recent-activity"
 import { QuickActions } from "@/components/admin/quick-actions"
-import dynamic from "next/dynamic"
+import dynamicImport from "next/dynamic"
 
-const Overview = dynamic(() => import("@/components/admin/overview").then((mod) => mod.Overview), {
+export const dynamic = 'force-dynamic'
+
+const Overview = dynamicImport(() => import("@/components/admin/overview").then((mod) => mod.Overview), {
   ssr: false,
 })
 

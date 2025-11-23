@@ -1,6 +1,8 @@
 import Link from "next/link"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+
+export const dynamic = 'force-dynamic'
 import { Badge } from "@/components/ui/badge"
 import { User, Package, MapPin, Heart, Settings, LogOut, ChevronRight, CreditCard, Bell } from "lucide-react"
 

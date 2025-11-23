@@ -46,6 +46,14 @@ export default function ClientHomePage({ trendingProducts, categories: rawCatego
     const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.8])
     const y = useTransform(scrollYProgress, [0, 0.5], [0, 100])
 
+    // Create autoplay plugin instance with useRef to avoid circular reference
+    const autoplayPlugin = useRef(
+        Autoplay({
+            delay: 5000,
+            stopOnInteraction: false,
+        })
+    )
+
     // Add icon components to categories
     const categories = rawCategories.map(cat => ({
         ...cat,
@@ -64,12 +72,7 @@ export default function ClientHomePage({ trendingProducts, categories: rawCatego
                     <Carousel
                         className="w-full rounded-2xl md:rounded-[2rem] overflow-hidden shadow-2xl ring-1 ring-black/5"
                         opts={{ loop: true, align: "start" }}
-                        plugins={[
-                            Autoplay({
-                                delay: 5000,
-                                stopOnInteraction: false,
-                            }),
-                        ]}
+                        plugins={[autoplayPlugin.current]}
                     >
                         <CarouselContent>
                             {[

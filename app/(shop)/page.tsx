@@ -28,6 +28,7 @@ const categoryColors: Record<string, string> = {
   sports: 'from-green-500 to-emerald-600',
 }
 
+export const dynamic = 'force-dynamic'
 export const revalidate = 60 // Revalidate every minute
 
 export default async function HomePage() {

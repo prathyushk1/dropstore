@@ -3,6 +3,8 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Plus, Edit, Trash2 } from "lucide-react"
 
+export const dynamic = 'force-dynamic'
+
 const coupons = [
   { id: '1', code: 'WELCOME10', type: 'percentage', value: 10, minOrder: 500, used: 45, limit: 100, status: 'active' },
   { id: '2', code: 'FLAT200', type: 'fixed', value: 200, minOrder: 1000, used: 23, limit: 50, status: 'active' },
