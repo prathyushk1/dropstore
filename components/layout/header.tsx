@@ -46,11 +46,11 @@ export function Header() {
         <div className="flex flex-1 items-center justify-end gap-2 sm:gap-4">
           <div className="hidden sm:block flex-1 max-w-md">
             <div className="relative group">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-purple-600 transition-colors" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
               <Input
                 type="search"
-                placeholder="Search products..."
-                className="pl-10 w-full border-2 focus:border-purple-300 rounded-xl"
+                placeholder="Search for products, brands and more..."
+                className="pl-10 w-full border-2 border-muted bg-secondary/30 focus:bg-white focus:border-primary/50 rounded-full transition-all duration-300 focus:shadow-lg focus:shadow-primary/5"
               />
             </div>
           </div>

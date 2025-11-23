@@ -56,7 +56,8 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-16">
           {/* Image Gallery */}
           <div className="space-y-4">
-            <div className="aspect-square relative rounded-3xl overflow-hidden border-2 border-gray-100 bg-white shadow-sm">
+            {/* Main Image - Desktop */}
+            <div className="hidden md:block aspect-square relative rounded-3xl overflow-hidden border-2 border-gray-100 bg-white shadow-sm">
               <Badge className="absolute top-4 left-4 z-10 bg-blue-500 hover:bg-blue-600 text-white border-0 px-3 py-1 text-sm shadow-lg">
                 Best Seller
               </Badge>
@@ -71,7 +72,18 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
                 priority
               />
             </div>
-            <div className="grid grid-cols-3 gap-4">
+
+            {/* Mobile Gallery - Horizontal Scroll */}
+            <div className="md:hidden flex overflow-x-auto snap-x snap-mandatory -mx-4 px-4 pb-4 gap-4 hide-scrollbar">
+              {product.images.map((img, i) => (
+                <div key={i} className="relative aspect-square min-w-[85vw] rounded-2xl overflow-hidden snap-center border border-gray-200 bg-white">
+                  <Image src={img} alt={`${product.name} ${i + 1}`} fill className="object-cover" priority={i === 0} />
+                </div>
+              ))}
+            </div>
+
+            {/* Thumbnails - Desktop */}
+            <div className="hidden md:grid grid-cols-3 gap-4">
               {product.images.map((img, i) => (
                 <div key={i} className={`aspect-square relative rounded-2xl overflow-hidden border-2 cursor-pointer transition-all ${i === 0 ? 'border-purple-500 ring-2 ring-purple-200' : 'border-transparent hover:border-purple-200'}`}>
                   <Image src={img} alt={`${product.name} ${i + 1}`} fill className="object-cover" />

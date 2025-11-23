@@ -24,52 +24,52 @@ export default function HomePage() {
   return (
     <div className="flex flex-col min-h-screen bg-background">
       {/* Hero Section - Immersive & Dynamic */}
-      <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden bg-background pt-16">
+      <section className="relative min-h-[70vh] md:min-h-[80vh] flex items-center justify-center overflow-hidden bg-background pt-16">
         {/* Background Gradients */}
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-[-20%] right-[-10%] w-[800px] h-[800px] bg-primary/20 rounded-full blur-[120px] animate-pulse" />
-          <div className="absolute bottom-[-20%] left-[-10%] w-[600px] h-[600px] bg-purple-500/20 rounded-full blur-[100px] animate-pulse delay-1000" />
+          <div className="absolute top-[-20%] right-[-10%] w-[400px] md:w-[800px] h-[400px] md:h-[800px] bg-primary/20 rounded-full blur-[80px] md:blur-[120px] animate-pulse" />
+          <div className="absolute bottom-[-20%] left-[-10%] w-[300px] md:w-[600px] h-[300px] md:h-[600px] bg-purple-500/20 rounded-full blur-[60px] md:blur-[100px] animate-pulse delay-1000" />
         </div>
 
         <div className="container relative z-10 px-4 md:px-6">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-8 text-center lg:text-left">
+          <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center">
+            <div className="space-y-6 md:space-y-8 text-center lg:text-left">
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 backdrop-blur-sm animate-fade-in">
                 <Sparkles className="h-4 w-4 text-primary" />
                 <span className="text-sm font-medium text-primary">New Collection 2024</span>
               </div>
 
-              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.1] animate-fade-in-up">
+              <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.1] animate-fade-in-up">
                 Discover <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-600">Extraordinary</span> Products
               </h1>
 
-              <p className="text-xl text-muted-foreground max-w-2xl mx-auto lg:mx-0 animate-fade-in-up animation-delay-200">
+              <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto lg:mx-0 animate-fade-in-up animation-delay-200">
                 Elevate your lifestyle with our curated selection of premium items. Quality meets affordability in every purchase.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start animate-fade-in-up animation-delay-400">
-                <Button size="lg" className="h-14 px-8 text-lg rounded-full bg-primary hover:bg-primary/90 shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all hover:scale-105" asChild>
+                <Button size="lg" className="h-12 md:h-14 px-8 text-lg rounded-full bg-primary hover:bg-primary/90 shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all hover:scale-105" asChild>
                   <Link href="/products">
                     Start Shopping <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>
                 </Button>
-                <Button size="lg" variant="outline" className="h-14 px-8 text-lg rounded-full border-2 hover:bg-secondary/50 backdrop-blur-sm transition-all hover:scale-105" asChild>
+                <Button size="lg" variant="outline" className="h-12 md:h-14 px-8 text-lg rounded-full border-2 hover:bg-secondary/50 backdrop-blur-sm transition-all hover:scale-105" asChild>
                   <Link href="/products?featured=true">
                     View Deals
                   </Link>
                 </Button>
               </div>
 
-              <div className="flex items-center justify-center lg:justify-start gap-8 pt-4 text-muted-foreground animate-fade-in-up animation-delay-600">
+              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 md:gap-8 pt-4 text-muted-foreground animate-fade-in-up animation-delay-600">
                 <div className="flex items-center gap-2">
                   <div className="p-2 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400">
-                    <Truck className="h-5 w-5" />
+                    <Truck className="h-4 w-4 md:h-5 md:w-5" />
                   </div>
                   <span className="text-sm font-medium">Free Shipping</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="p-2 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400">
-                    <Shield className="h-5 w-5" />
+                    <Shield className="h-4 w-4 md:h-5 md:w-5" />
                   </div>
                   <span className="text-sm font-medium">Secure Payment</span>
                 </div>
@@ -77,7 +77,7 @@ export default function HomePage() {
             </div>
 
             {/* Hero Image/Visual */}
-            <div className="relative lg:h-[600px] w-full hidden lg:block animate-scale-in">
+            <div className="relative h-[300px] md:h-[600px] w-full hidden md:block animate-scale-in">
               <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-purple-500/10 rounded-[3rem] rotate-3 backdrop-blur-sm border border-white/10" />
               <div className="absolute inset-0 bg-card rounded-[3rem] -rotate-3 shadow-2xl overflow-hidden border border-border/50">
                 <Image
@@ -118,23 +118,23 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Categories Section */}
-      <section className="py-20 container px-4 md:px-6">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
+      {/* Categories Section - Horizontal Scroll on Mobile */}
+      <section className="py-12 md:py-20 container px-4 md:px-6">
+        <div className="flex flex-col md:flex-row justify-between items-end mb-8 md:mb-12 gap-4">
           <div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-2">Shop by Category</h2>
-            <p className="text-muted-foreground">Explore our wide range of collections</p>
+            <h2 className="text-2xl md:text-4xl font-bold mb-2">Shop by Category</h2>
+            <p className="text-muted-foreground text-sm md:text-base">Explore our wide range of collections</p>
           </div>
-          <Button variant="ghost" className="group" asChild>
+          <Button variant="ghost" className="group hidden md:inline-flex" asChild>
             <Link href="/categories">
               View All Categories <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Link>
           </Button>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="flex overflow-x-auto pb-6 -mx-4 px-4 md:grid md:grid-cols-4 md:gap-6 md:overflow-visible md:pb-0 md:mx-0 md:px-0 snap-x snap-mandatory hide-scrollbar">
           {categories.map((category) => (
-            <Link key={category.slug} href={`/products?category=${category.slug}`} className="group relative overflow-hidden rounded-3xl aspect-[4/5]">
+            <Link key={category.slug} href={`/products?category=${category.slug}`} className="group relative overflow-hidden rounded-3xl aspect-[4/5] min-w-[200px] md:min-w-0 mr-4 md:mr-0 snap-center shrink-0">
               <Image
                 src={category.image}
                 alt={category.name}
@@ -151,6 +151,12 @@ export default function HomePage() {
               </div>
             </Link>
           ))}
+        </div>
+
+        <div className="mt-4 text-center md:hidden">
+          <Button variant="link" asChild>
+            <Link href="/categories">View All Categories</Link>
+          </Button>
         </div>
       </section>
 
