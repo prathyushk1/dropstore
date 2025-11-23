@@ -2,9 +2,13 @@
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { DollarSign, ShoppingCart, Package, Users, Activity } from "lucide-react"
-import { Overview } from "@/components/admin/overview"
 import { RecentActivity } from "@/components/admin/recent-activity"
 import { QuickActions } from "@/components/admin/quick-actions"
+import dynamic from "next/dynamic"
+
+const Overview = dynamic(() => import("@/components/admin/overview").then((mod) => mod.Overview), {
+  ssr: false,
+})
 
 const stats = [
   { label: 'Total Revenue', value: '₹1,24,500', icon: DollarSign, change: '+12.5%' },

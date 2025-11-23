@@ -9,7 +9,7 @@ import Autoplay from "embla-carousel-autoplay"
 import { QuickViewModal } from "@/components/ui/quick-view-modal"
 import { getProducts, getCategories } from "@/lib/db"
 import { Product } from "@/types"
-import ClientHomePage from "./client-page"
+import ClientHomePage from "./client-home-page"
 
 // Icon mapping for categories
 const categoryIcons: Record<string, any> = {
@@ -31,8 +31,22 @@ const categoryColors: Record<string, string> = {
 export const revalidate = 60 // Revalidate every minute
 
 export default async function HomePage() {
-  const { data: products } = await getProducts({ limit: 8 })
-  const { data: categoriesData } = await getCategories()
+  let products = []
+  let categoriesData = []
+
+  try {
+    const { data } = await getProducts({ limit: 8 })
+    products = data || []
+  } catch (error) {
+    console.error("Failed to fetch products:", error)
+  }
+
+  try {
+    const { data } = await getCategories()
+    categoriesData = data || []
+  } catch (error) {
+    console.error("Failed to fetch categories:", error)
+  }
 
   // Transform categories to match UI needs
   const categories = categoriesData?.map(cat => ({
