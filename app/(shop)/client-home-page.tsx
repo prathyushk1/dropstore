@@ -5,7 +5,7 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { ArrowRight, Star, ArrowUpRight, Trophy, Eye, Smartphone, Watch, Home, Shirt } from "lucide-react"
+import { ArrowRight, Star, ArrowUpRight, Trophy, Eye } from "lucide-react"
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel"
 import Autoplay from "embla-carousel-autoplay"
 import { useState, useRef } from "react"
@@ -20,21 +20,12 @@ const brands = [
     { name: "UrbanWear", logo: "https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?w=200&h=100&fit=crop&auto=format" },
 ]
 
-// Icon mapping for categories
-const categoryIcons: Record<string, any> = {
-    electronics: Smartphone,
-    fashion: Shirt,
-    home: Home,
-    accessories: Watch,
-    sports: Trophy,
-}
-
 interface ClientHomePageProps {
     trendingProducts: any[]
     categories: any[]
 }
 
-export default function ClientHomePage({ trendingProducts, categories: rawCategories }: ClientHomePageProps) {
+export default function ClientHomePage({ trendingProducts, categories }: ClientHomePageProps) {
     const [quickViewProduct, setQuickViewProduct] = useState<any | null>(null)
     const targetRef = useRef(null)
     const { scrollYProgress } = useScroll({
@@ -45,21 +36,6 @@ export default function ClientHomePage({ trendingProducts, categories: rawCatego
     const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0])
     const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.8])
     const y = useTransform(scrollYProgress, [0, 0.5], [0, 100])
-
-    // Create autoplay plugin instance with useRef to avoid circular reference
-    const autoplayPlugin = useRef(
-        Autoplay({
-            delay: 5000,
-            stopOnInteraction: false,
-        })
-    )
-
-    // Add icon components to categories
-    const categories = rawCategories.map(cat => ({
-        ...cat,
-        icon: categoryIcons[cat.slug] || Home
-    }))
-
 
     return (
         <div className="flex flex-col min-h-screen bg-background" ref={targetRef}>
@@ -72,7 +48,12 @@ export default function ClientHomePage({ trendingProducts, categories: rawCatego
                     <Carousel
                         className="w-full rounded-2xl md:rounded-[2rem] overflow-hidden shadow-2xl ring-1 ring-black/5"
                         opts={{ loop: true, align: "start" }}
-                        plugins={[autoplayPlugin.current]}
+                        plugins={[
+                            Autoplay({
+                                delay: 5000,
+                                stopOnInteraction: false,
+                            }),
+                        ]}
                     >
                         <CarouselContent>
                             {[

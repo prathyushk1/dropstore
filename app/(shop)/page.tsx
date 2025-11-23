@@ -52,6 +52,7 @@ export default async function HomePage() {
   // Transform categories to match UI needs
   const categories = categoriesData?.map(cat => ({
     ...cat,
+    icon: categoryIcons[cat.slug] || Home,
     color: categoryColors[cat.slug] || 'from-purple-500 to-indigo-500',
     // Use a placeholder if no image
     image: cat.image || 'https://images.unsplash.com/photo-1556911220-bff31c812dba?w=600'
