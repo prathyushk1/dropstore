@@ -59,9 +59,6 @@ export function Header() {
             <Button variant="ghost" size="icon" className="h-9 w-9 sm:h-10 sm:w-10 relative hover:bg-purple-50 hover:text-purple-600 rounded-xl" asChild>
               <Link href="/account/wishlist">
                 <Heart className="h-4 w-4 sm:h-5 sm:w-5" />
-                <Badge className="absolute -top-1 -right-1 h-4 w-4 sm:h-5 sm:w-5 flex items-center justify-center p-0 text-[10px] bg-gradient-to-r from-pink-500 to-red-500 border-0">
-                  3
-                </Badge>
               </Link>
             </Button>
             <Button variant="ghost" size="icon" className="h-9 w-9 sm:h-10 sm:w-10 hover:bg-purple-50 hover:text-purple-600 rounded-xl hidden sm:flex" asChild>
@@ -72,9 +69,6 @@ export function Header() {
             <Button variant="ghost" size="icon" className="h-9 w-9 sm:h-10 sm:w-10 relative hover:bg-purple-50 hover:text-purple-600 rounded-xl" asChild>
               <Link href="/cart">
                 <ShoppingCart className="h-4 w-4 sm:h-5 sm:w-5" />
-                <Badge className="absolute -top-1 -right-1 h-4 w-4 sm:h-5 sm:w-5 flex items-center justify-center p-0 text-[10px] bg-gradient-to-r from-purple-600 to-pink-600 border-0">
-                  2
-                </Badge>
               </Link>
             </Button>
           </nav>

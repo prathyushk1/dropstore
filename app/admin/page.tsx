@@ -1,10 +1,11 @@
 'use client'
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { DollarSign, ShoppingCart, Package, Users, Activity } from "lucide-react"
+import { DollarSign, ShoppingCart, Package, Users } from "lucide-react"
 import { RecentActivity } from "@/components/admin/recent-activity"
 import { QuickActions } from "@/components/admin/quick-actions"
 import dynamicImport from "next/dynamic"
+import { useEffect, useState } from "react"
 
 export const dynamic = 'force-dynamic'
 
@@ -12,14 +13,26 @@ const Overview = dynamicImport(() => import("@/components/admin/overview").then(
   ssr: false,
 })
 
-const stats = [
-  { label: 'Total Revenue', value: '₹1,24,500', icon: DollarSign, change: '+12.5%' },
-  { label: 'Orders', value: '156', icon: ShoppingCart, change: '+8.2%' },
-  { label: 'Products', value: '89', icon: Package, change: '+3' },
-  { label: 'Customers', value: '1,234', icon: Users, change: '+18.7%' },
-]
-
 export default function AdminDashboard() {
+  const [stats, setStats] = useState([
+    { label: 'Total Revenue', value: '₹0', icon: DollarSign, change: '--' },
+    { label: 'Orders', value: '0', icon: ShoppingCart, change: '--' },
+    { label: 'Products', value: '0', icon: Package, change: '--' },
+    { label: 'Customers', value: '0', icon: Users, change: '--' },
+  ])
+
+  useEffect(() => {
+    // Fetch real stats from API
+    const fetchStats = async () => {
+      try {
+        // You can implement API endpoints to fetch these stats
+        // For now, keeping them as placeholders
+      } catch (error) {
+        console.error('Failed to fetch stats:', error)
+      }
+    }
+    fetchStats()
+  }, [])
   return (
     <div className="space-y-8">
       <div>

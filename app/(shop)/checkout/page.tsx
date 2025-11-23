@@ -28,11 +28,22 @@ export default function CheckoutPage() {
   const [loading, setLoading] = useState(false)
   const [paymentMethod, setPaymentMethod] = useState("razorpay")
   const [paymentSuccess, setPaymentSuccess] = useState(false)
+  const [cartItems, setCartItems] = useState<any[]>([])
 
-  // Mock Cart Data (Replace with real cart data later)
-  const cartTotal = 2999
+  // Load cart from localStorage
+  useState(() => {
+    if (typeof window !== 'undefined') {
+      const savedCart = localStorage.getItem('cart')
+      if (savedCart) {
+        setCartItems(JSON.parse(savedCart))
+      }
+    }
+  })
+
+  // Calculate totals from cart
+  const cartTotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0)
   const tax = Math.round(cartTotal * 0.18)
-  const shipping = 0
+  const shipping = cartTotal > 500 ? 0 : 50
   const total = cartTotal + tax + shipping
 
   const handlePayment = async () => {

@@ -16,7 +16,7 @@ export function Footer() {
               <span className="text-2xl font-bold font-heading">ShopDrop</span>
             </Link>
             <p className="text-muted-foreground text-sm leading-relaxed">
-              Your one-stop destination for premium products. We bring quality and style right to your doorstep with fast shipping and excellent support.
+              Your store description goes here. Customize this text to describe your business and what makes it unique.
             </p>
             <div className="flex gap-4 pt-2">
               <Button variant="ghost" size="icon" className="rounded-full hover:bg-primary/10 hover:text-primary">
@@ -82,15 +82,15 @@ export function Footer() {
               <ul className="space-y-3 text-sm text-muted-foreground">
                 <li className="flex items-start gap-3">
                   <MapPin className="h-4 w-4 mt-0.5 text-primary" />
-                  <span>123 Commerce St, Business City, 10001</span>
+                  <span>Your Business Address</span>
                 </li>
                 <li className="flex items-center gap-3">
                   <Phone className="h-4 w-4 text-primary" />
-                  <span>+1 (555) 123-4567</span>
+                  <span>Your Phone Number</span>
                 </li>
                 <li className="flex items-center gap-3">
                   <Mail className="h-4 w-4 text-primary" />
-                  <span>support@shopdrop.com</span>
+                  <span>your-email@example.com</span>
                 </li>
               </ul>
             </div>

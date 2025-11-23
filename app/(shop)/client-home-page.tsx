@@ -12,13 +12,8 @@ import { useState, useRef } from "react"
 import { QuickViewModal } from "@/components/ui/quick-view-modal"
 import { motion, useScroll, useTransform } from "framer-motion"
 
-const brands = [
-    { name: "TechGiant", logo: "https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?w=200&h=100&fit=crop&auto=format" },
-    { name: "StyleCo", logo: "https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?w=200&h=100&fit=crop&auto=format" },
-    { name: "HomeLux", logo: "https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?w=200&h=100&fit=crop&auto=format" },
-    { name: "SportX", logo: "https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?w=200&h=100&fit=crop&auto=format" },
-    { name: "UrbanWear", logo: "https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?w=200&h=100&fit=crop&auto=format" },
-]
+// Brands will be fetched from database or props
+const brands: { name: string; logo: string }[] = []
 
 interface ClientHomePageProps {
     trendingProducts: any[]
@@ -111,29 +106,31 @@ export default function ClientHomePage({ trendingProducts, categories }: ClientH
             <div className="h-[50vh] md:h-[60vh] w-full" />
 
             <div className="relative z-10 bg-background">
-                {/* Featured Brands - Marquee */}
-                <section className="py-8 border-y bg-secondary/20 overflow-hidden">
-                    <div className="container px-4 md:px-6">
-                        <p className="text-center text-sm font-medium text-muted-foreground mb-6 uppercase tracking-widest">Trusted by Premium Brands</p>
-                        <div className="flex justify-between items-center gap-8 opacity-60 grayscale hover:grayscale-0 transition-all duration-500 overflow-x-auto hide-scrollbar">
-                            {brands.map((brand, i) => (
-                                <motion.div
-                                    key={i}
-                                    className="flex items-center gap-2 min-w-[120px]"
-                                    initial={{ opacity: 0, y: 20 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: i * 0.1 }}
-                                    viewport={{ once: true }}
-                                >
-                                    <div className="h-8 w-8 rounded-full bg-primary/20 flex items-center justify-center">
-                                        <Trophy className="h-4 w-4 text-primary" />
-                                    </div>
-                                    <span className="font-bold text-lg">{brand.name}</span>
-                                </motion.div>
-                            ))}
+                {/* Featured Brands - Only show if brands exist */}
+                {brands.length > 0 && (
+                    <section className="py-8 border-y bg-secondary/20 overflow-hidden">
+                        <div className="container px-4 md:px-6">
+                            <p className="text-center text-sm font-medium text-muted-foreground mb-6 uppercase tracking-widest">Trusted by Premium Brands</p>
+                            <div className="flex justify-between items-center gap-8 opacity-60 grayscale hover:grayscale-0 transition-all duration-500 overflow-x-auto hide-scrollbar">
+                                {brands.map((brand, i) => (
+                                    <motion.div
+                                        key={i}
+                                        className="flex items-center gap-2 min-w-[120px]"
+                                        initial={{ opacity: 0, y: 20 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: i * 0.1 }}
+                                        viewport={{ once: true }}
+                                    >
+                                        <div className="h-8 w-8 rounded-full bg-primary/20 flex items-center justify-center">
+                                            <Trophy className="h-4 w-4 text-primary" />
+                                        </div>
+                                        <span className="font-bold text-lg">{brand.name}</span>
+                                    </motion.div>
+                                ))}
+                            </div>
                         </div>
-                    </div>
-                </section>
+                    </section>
+                )}
 
                 {/* Categories Section - Enhanced Visuals */}
                 <section className="py-12 md:py-20 container px-4 md:px-6">

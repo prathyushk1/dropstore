@@ -1,76 +1,35 @@
-# Dropshipping Ecommerce Platform
+# E-Commerce Store - Next.js 14
 
-A modern, fast, and professional dropshipping ecommerce website built with Next.js 14, TypeScript, Tailwind CSS, and Supabase.
+A modern, full-featured e-commerce platform built with Next.js 14, Supabase, and Tailwind CSS.
 
 ## Features
 
-### Customer Features
-- 🏠 Home page with hero banner, trending products, categories
-- 🛍️ Product listing with filters (category, price range, sorting)
-- 📦 Product detail pages with images, specs, reviews
-- 🛒 Shopping cart with quantity management
-- 💳 Checkout with address management and payment integration
-- 👤 User account (profile, orders, addresses, wishlist)
-- 🔐 Authentication (signup, login, password reset)
-
-### Admin Features
-- 📊 Dashboard with sales stats and analytics
-- 📦 Product management (CRUD, images, variants, SEO)
-- 🗂️ Category management
-- 📋 Order management with status updates
-- 🎟️ Coupon management
-- ⚙️ Store settings
-
-### Technical Features
-- ⚡ Next.js 14 with App Router
-- 🎨 Tailwind CSS + shadcn/ui components
-- 🗄️ Supabase (PostgreSQL + Auth)
-- 💰 Razorpay payment integration (mock)
-- 🔒 Role-based access control (guest, customer, admin)
-- 📱 Fully responsive design
-- 🚀 Optimized performance (SSR/SSG)
+- 🛍️ Complete e-commerce functionality
+- 🎨 Modern, responsive design
+- 🔐 Secure authentication with Supabase
+- 💳 Payment integration with Razorpay
+- 📦 Product management
+- 🛒 Shopping cart & wishlist
+- 📱 Mobile-responsive
+- ⚡ Fast performance with Next.js 14
+- 🎯 Admin dashboard for store management
 
 ## Tech Stack
 
 - **Framework:** Next.js 14 (App Router)
-- **Language:** TypeScript
-- **Styling:** Tailwind CSS
-- **UI Components:** shadcn/ui
 - **Database:** Supabase (PostgreSQL)
 - **Authentication:** Supabase Auth
+- **Styling:** Tailwind CSS
+- **UI Components:** Radix UI
 - **Payments:** Razorpay
-- **Validation:** Zod
-- **Forms:** React Hook Form
-
-## Project Structure
-
-```
-├── app/                    # Next.js app directory
-│   ├── (auth)/            # Auth pages (login, signup)
-│   ├── account/           # User account pages
-│   ├── admin/             # Admin panel
-│   ├── cart/              # Shopping cart
-│   ├── checkout/          # Checkout flow
-│   ├── products/          # Product pages
-│   └── page.tsx           # Home page
-├── components/
-│   ├── layout/            # Layout components (header, footer)
-│   └── ui/                # Reusable UI components
-├── lib/
-│   ├── supabase/          # Supabase clients
-│   ├── db.ts              # Database helpers
-│   ├── utils.ts           # Utility functions
-│   └── validations.ts     # Zod schemas
-└── types/
-    └── index.ts           # TypeScript types
-```
+- **Email:** Resend
+- **Animations:** Framer Motion
 
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js 18+ 
-- npm or yarn
+- Node.js 18+ installed
 - Supabase account
 - Razorpay account (for payments)
 
@@ -78,8 +37,8 @@ A modern, fast, and professional dropshipping ecommerce website built with Next.
 
 1. Clone the repository
 ```bash
-git clone <repository-url>
-cd dropshipping-ecommerce
+git clone <your-repo-url>
+cd myshop
 ```
 
 2. Install dependencies
@@ -88,34 +47,56 @@ npm install
 ```
 
 3. Set up environment variables
-```bash
-cp .env.local.example .env.local
-```
-
-Edit `.env.local` with your credentials:
-```env
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
-NEXT_PUBLIC_RAZORPAY_KEY_ID=your_razorpay_key_id
-RAZORPAY_KEY_SECRET=your_razorpay_secret
-NEXT_PUBLIC_APP_URL=http://localhost:3000
-```
+   - Copy `.env.local.example` to `.env.local`
+   - Fill in your Supabase credentials
+   - Add your Razorpay keys
+   - Configure other settings
 
 4. Set up the database
-
-Follow the instructions in `DATABASE.md` to create the required tables in Supabase.
+   - Go to your Supabase project
+   - Run the SQL from `supabase-schema.sql` in the SQL Editor
+   - Optionally run `sample-data.sql` for test data
 
 5. Run the development server
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+6. Open [http://localhost:3000](http://localhost:3000)
 
-## Database Setup
+## Configuration
 
-See `DATABASE.md` for detailed database schema and setup instructions.
+### Supabase Setup
+
+1. Create a new project at [supabase.com](https://supabase.com)
+2. Get your project URL and anon key from Settings > API
+3. Add them to `.env.local`
+4. Run the database schema from `supabase-schema.sql`
+
+### Admin Access
+
+- Default admin route: `/admin/login`
+- Set your admin password in `.env.local` as `ADMIN_PASSWORD`
+
+### Payment Setup
+
+1. Sign up at [razorpay.com](https://razorpay.com)
+2. Get your API keys from the dashboard
+3. Add them to `.env.local`
+
+## Customization
+
+### Branding
+
+- Update the store name in `components/layout/header.tsx` and `components/layout/footer.tsx`
+- Change colors in `tailwind.config.ts`
+- Update logo and favicon in the `public` folder
+
+### Content
+
+- Update footer contact information in `components/layout/footer.tsx`
+- Customize hero slides in `app/(shop)/client-home-page.tsx`
+- Add your products through the admin panel or database
 
 ## Deployment
 
@@ -131,36 +112,30 @@ See `DATABASE.md` for detailed database schema and setup instructions.
 The app can be deployed to any platform that supports Next.js:
 - Netlify
 - Railway
-- AWS Amplify
-- Self-hosted
+- AWS
+- DigitalOcean
 
-## Development
+## Project Structure
 
-### Adding New Pages
+```
+├── app/                    # Next.js app directory
+│   ├── (shop)/            # Customer-facing pages
+│   ├── admin/             # Admin dashboard
+│   └── api/               # API routes
+├── components/            # React components
+│   ├── layout/           # Layout components
+│   ├── shop/             # Shop-specific components
+│   └── ui/               # UI components
+├── lib/                   # Utility functions
+│   ├── db.ts             # Database helpers
+│   └── supabase/         # Supabase client
+└── types/                 # TypeScript types
+```
 
-Pages are automatically routed based on the file structure in the `app/` directory.
+## Support
 
-### Adding New Components
-
-UI components should be added to `components/ui/` and follow the shadcn/ui pattern.
-
-### Database Queries
-
-Use the helper functions in `lib/db.ts` for database operations.
-
-## TODO
-
-- [ ] Implement real Supabase authentication
-- [ ] Connect Razorpay payment gateway
-- [ ] Add image upload functionality
-- [ ] Implement search functionality
-- [ ] Add product reviews system
-- [ ] Email notifications
-- [ ] Order tracking
-- [ ] Analytics integration
-- [ ] SEO optimization
-- [ ] Performance monitoring
+For issues or questions, please open an issue in the repository.
 
 ## License
 
-MIT
+This project is licensed under the MIT License.

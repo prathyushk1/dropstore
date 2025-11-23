@@ -10,42 +10,38 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Minus, Plus, Trash2, ShoppingBag, ArrowRight, ShieldCheck, Truck } from "lucide-react"
 
-// Dummy cart data
-const initialCart = [
-  {
-    id: '1',
-    name: 'Wireless Earbuds Pro Max',
-    price: 2999,
-    image: 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=200&q=80',
-    quantity: 1,
-    category: 'Electronics'
-  },
-  {
-    id: '2',
-    name: 'Smart Watch Ultra',
-    price: 8999,
-    image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=200&q=80',
-    quantity: 2,
-    category: 'Wearables'
-  },
-]
-
 export default function CartPage() {
-  const [cartItems, setCartItems] = useState(initialCart)
+  const [cartItems, setCartItems] = useState<any[]>([])
+  
+  // Load cart from localStorage on mount
+  useState(() => {
+    if (typeof window !== 'undefined') {
+      const savedCart = localStorage.getItem('cart')
+      if (savedCart) {
+        setCartItems(JSON.parse(savedCart))
+      }
+    }
+  })
   const [couponCode, setCouponCode] = useState('')
 
   const updateQuantity = (id: string, delta: number) => {
-    setCartItems(items =>
-      items.map(item =>
-        item.id === id
-          ? { ...item, quantity: Math.max(1, item.quantity + delta) }
-          : item
-      )
+    const updatedItems = cartItems.map(item =>
+      item.id === id
+        ? { ...item, quantity: Math.max(1, item.quantity + delta) }
+        : item
     )
+    setCartItems(updatedItems)
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('cart', JSON.stringify(updatedItems))
+    }
   }
 
   const removeItem = (id: string) => {
-    setCartItems(items => items.filter(item => item.id !== id))
+    const updatedItems = cartItems.filter(item => item.id !== id)
+    setCartItems(updatedItems)
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('cart', JSON.stringify(updatedItems))
+    }
   }
 
   const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0)
