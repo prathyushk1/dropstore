@@ -3,10 +3,11 @@
 import { useState } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { ArrowRight, CheckCircle2, Github, Mail } from "lucide-react"
+import { Checkbox } from "@/components/ui/checkbox"
+import { ArrowRight, CheckCircle2, Github, Mail, Facebook } from "lucide-react"
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -76,12 +77,11 @@ export default function LoginPage() {
             </div>
 
             <div className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                id="remember"
-                className="h-4 w-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
-              />
-              <label htmlFor="remember" className="text-sm text-muted-foreground cursor-pointer select-none">
+              <Checkbox id="remember" />
+              <label
+                htmlFor="remember"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
                 Remember me for 30 days
               </label>
             </div>
@@ -123,14 +123,15 @@ export default function LoginPage() {
               <Mail className="mr-2 h-4 w-4" /> Google
             </Button>
           </div>
-
+        </CardContent>
+        <CardFooter className="flex justify-center">
           <div className="text-center text-sm text-muted-foreground">
-            Don't have an account?{' '}
+            Don&apos;t have an account?{' '}
             <Link href="/auth/signup" className="font-semibold text-purple-600 hover:text-purple-500 hover:underline">
               Sign up for free
             </Link>
           </div>
-        </CardContent>
+        </CardFooter>
       </Card>
     </div>
   )

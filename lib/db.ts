@@ -8,8 +8,13 @@ export async function getProducts(filters?: {
   minPrice?: number
   maxPrice?: number
   search?: string
+  limit?: number
 }) {
   let query = supabase.from('products').select('*, category:categories(*)')
+
+  if (filters?.limit) {
+    query = query.limit(filters.limit)
+  }
 
   if (filters?.category) {
     query = query.eq('category_id', filters.category)

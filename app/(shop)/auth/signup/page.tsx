@@ -3,10 +3,11 @@
 import { useState } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { ArrowRight, Sparkles, Github, Mail } from "lucide-react"
+import { ArrowRight, Sparkles, Github, Mail, Facebook } from "lucide-react"
+import { PasswordStrength } from "@/components/auth/password-strength"
 
 export default function SignupPage() {
   const [formData, setFormData] = useState({
@@ -79,6 +80,7 @@ export default function SignupPage() {
                 required
                 className="bg-white/50 border-gray-200 focus:bg-white transition-colors h-11"
               />
+              <PasswordStrength password={formData.password} />
             </div>
             <div className="space-y-2">
               <Label htmlFor="confirmPassword">Confirm Password</Label>
@@ -129,14 +131,15 @@ export default function SignupPage() {
               <Mail className="mr-2 h-4 w-4" /> Google
             </Button>
           </div>
-
+        </CardContent>
+        <CardFooter className="flex justify-center">
           <div className="text-center text-sm text-muted-foreground">
             Already have an account?{' '}
             <Link href="/auth/login" className="font-semibold text-purple-600 hover:text-purple-500 hover:underline">
               Sign in
             </Link>
           </div>
-        </CardContent>
+        </CardFooter>
       </Card>
     </div>
   )

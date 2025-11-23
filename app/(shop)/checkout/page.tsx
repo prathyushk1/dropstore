@@ -1,189 +1,242 @@
-'use client'
+"use client"
 
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { CheckCircle2, CreditCard, Truck, ShieldCheck, Lock } from "lucide-react"
+import { Separator } from "@/components/ui/separator"
+import { CreditCard, Truck, ShieldCheck, Lock, CheckCircle2 } from "lucide-react"
+import { toast } from "sonner"
+import { useRouter } from "next/navigation"
+import Script from "next/script"
+import { Progress } from "@/components/ui/progress"
+import { Confetti } from "@/components/ui/confetti"
 
-const savedAddresses = [
-  {
-    id: '1',
-    name: 'John Doe',
-    phone: '9876543210',
-    address: '123 Main St, Apartment 4B',
-    city: 'Mumbai',
-    state: 'Maharashtra',
-    postal_code: '400001',
-    isDefault: true,
-  },
-]
-
-const cartItems = [
-  { name: 'Wireless Earbuds Pro Max', price: 2999, quantity: 1, image: 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=100&q=80' },
-  { name: 'Smart Watch Ultra', price: 8999, quantity: 2, image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=100&q=80' },
-]
+// Declare Razorpay on window
+declare global {
+  interface Window {
+    Razorpay: any
+  }
+}
 
 export default function CheckoutPage() {
-  const [selectedAddress, setSelectedAddress] = useState('1')
-  const [paymentMethod, setPaymentMethod] = useState('razorpay')
+  const router = useRouter()
+  const [loading, setLoading] = useState(false)
+  const [paymentMethod, setPaymentMethod] = useState("razorpay")
+  const [paymentSuccess, setPaymentSuccess] = useState(false)
 
-  const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0)
+  // Mock Cart Data (Replace with real cart data later)
+  const cartTotal = 2999
+  const tax = Math.round(cartTotal * 0.18)
   const shipping = 0
-  const total = subtotal + shipping
+  const total = cartTotal + tax + shipping
+
+  const handlePayment = async () => {
+    setLoading(true)
+
+    try {
+      // 1. Create Order
+      const response = await fetch('/api/razorpay', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ amount: total }),
+      })
+
+      const order = await response.json()
+
+      if (!response.ok) {
+        throw new Error(order.error || 'Something went wrong')
+      }
+
+      // 2. Initialize Razorpay
+      const options = {
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+        amount: order.amount,
+        currency: order.currency,
+        name: "MyShop Premium",
+        description: "Transaction for Order #" + order.id,
+        order_id: order.id,
+        handler: async function (response: any) {
+          // Handle Success
+          setPaymentSuccess(true)
+          toast.success("Payment Successful!", {
+            description: `Payment ID: ${response.razorpay_payment_id}`
+          })
+
+          // Here you would typically save the order to Supabase
+          // await saveOrder(response)
+
+          setTimeout(() => {
+            router.push('/account/orders')
+          }, 3000)
+        },
+        prefill: {
+          name: "John Doe", // Replace with user data
+          email: "john@example.com",
+          contact: "9999999999",
+        },
+        theme: {
+          color: "#7c3aed", // Primary color
+        },
+      }
+
+      const rzp1 = new window.Razorpay(options)
+      rzp1.open()
+
+    } catch (error) {
+      console.error(error)
+      toast.error("Payment Failed", {
+        description: "Please try again."
+      })
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  if (paymentSuccess) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Confetti />
+        <div className="text-center space-y-4 animate-in fade-in zoom-in duration-500">
+          <div className="h-20 w-20 bg-green-100 rounded-full flex items-center justify-center mx-auto">
+            <CheckCircle2 className="h-10 w-10 text-green-600" />
+          </div>
+          <h1 className="text-3xl font-bold">Order Confirmed!</h1>
+          <p className="text-muted-foreground">Thank you for your purchase. Redirecting...</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
-    <div className="min-h-screen bg-gray-50/50 py-8 sm:py-12">
-      <div className="container px-4">
-        <div className="flex items-center justify-center mb-10">
-          <div className="flex items-center gap-4 text-sm font-medium">
-            <div className="flex items-center gap-2 text-green-600">
-              <div className="h-8 w-8 rounded-full bg-green-100 flex items-center justify-center">
-                <CheckCircle2 className="h-5 w-5" />
-              </div>
-              Cart
+    <div className="min-h-screen bg-background py-10 px-4 md:px-6">
+      <Script src="https://checkout.razorpay.com/v1/checkout.js" />
+
+      <div className="container max-w-6xl mx-auto">
+        <div className="mb-8 space-y-4">
+          <h1 className="text-3xl font-bold">Checkout</h1>
+          <div className="space-y-2">
+            <div className="flex justify-between text-sm font-medium text-muted-foreground">
+              <span>Cart</span>
+              <span className="text-primary">Payment</span>
+              <span>Confirmation</span>
             </div>
-            <div className="h-px w-12 bg-gray-300" />
-            <div className="flex items-center gap-2 text-purple-600">
-              <div className="h-8 w-8 rounded-full bg-purple-600 text-white flex items-center justify-center shadow-lg shadow-purple-200">
-                2
-              </div>
-              Checkout
-            </div>
-            <div className="h-px w-12 bg-gray-300" />
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <div className="h-8 w-8 rounded-full bg-gray-100 flex items-center justify-center">
-                3
-              </div>
-              Payment
-            </div>
+            <Progress value={66} className="h-2" />
           </div>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-8 lg:gap-12">
+        <div className="grid lg:grid-cols-3 gap-8">
+          {/* Left Column - Forms */}
           <div className="lg:col-span-2 space-y-8">
             {/* Shipping Address */}
-            <section>
-              <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-                <Truck className="h-5 w-5 text-purple-600" />
-                Shipping Address
-              </h2>
-              <Card className="border-0 shadow-md ring-1 ring-gray-100 overflow-hidden">
-                <CardContent className="p-6">
-                  <RadioGroup value={selectedAddress} onValueChange={setSelectedAddress} className="space-y-4">
-                    {savedAddresses.map((addr) => (
-                      <div key={addr.id} className={`relative flex items-start space-x-4 p-4 border-2 rounded-xl transition-all cursor-pointer ${selectedAddress === addr.id ? 'border-purple-600 bg-purple-50/50' : 'border-gray-100 hover:border-gray-200'}`}>
-                        <RadioGroupItem value={addr.id} id={addr.id} className="mt-1" />
-                        <label htmlFor={addr.id} className="flex-1 cursor-pointer">
-                          <div className="flex justify-between mb-1">
-                            <span className="font-bold text-foreground">{addr.name}</span>
-                            {addr.isDefault && <span className="text-xs bg-gray-100 px-2 py-0.5 rounded text-muted-foreground">Default</span>}
-                          </div>
-                          <div className="text-sm text-muted-foreground leading-relaxed mb-2">
-                            {addr.address}, {addr.city}, {addr.state} - {addr.postal_code}
-                          </div>
-                          <div className="text-sm font-medium text-foreground">Phone: {addr.phone}</div>
-                        </label>
-                      </div>
-                    ))}
-                  </RadioGroup>
-
-                  <div className="mt-6">
-                    <Button variant="outline" className="w-full border-dashed border-2 hover:border-purple-500 hover:text-purple-600 h-12">
-                      + Add New Address
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            </section>
-
-            {/* Payment Method */}
-            <section>
-              <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-                <CreditCard className="h-5 w-5 text-purple-600" />
-                Payment Method
-              </h2>
-              <Card className="border-0 shadow-md ring-1 ring-gray-100">
-                <CardContent className="p-6">
-                  <RadioGroup value={paymentMethod} onValueChange={setPaymentMethod} className="space-y-4">
-                    <div className={`flex items-center space-x-4 p-4 border-2 rounded-xl transition-all cursor-pointer ${paymentMethod === 'razorpay' ? 'border-purple-600 bg-purple-50/50' : 'border-gray-100 hover:border-gray-200'}`}>
-                      <RadioGroupItem value="razorpay" id="razorpay" />
-                      <label htmlFor="razorpay" className="flex-1 cursor-pointer flex items-center justify-between">
-                        <div>
-                          <div className="font-bold text-foreground">Pay Online</div>
-                          <div className="text-sm text-muted-foreground">UPI, Credit/Debit Cards, NetBanking</div>
-                        </div>
-                        <div className="flex gap-2">
-                          {/* Icons placeholder */}
-                          <div className="h-6 w-10 bg-white border rounded" />
-                          <div className="h-6 w-10 bg-white border rounded" />
-                          <div className="h-6 w-10 bg-white border rounded" />
-                        </div>
-                      </label>
-                    </div>
-                    <div className={`flex items-center space-x-4 p-4 border-2 rounded-xl transition-all cursor-pointer ${paymentMethod === 'cod' ? 'border-purple-600 bg-purple-50/50' : 'border-gray-100 hover:border-gray-200'}`}>
-                      <RadioGroupItem value="cod" id="cod" />
-                      <label htmlFor="cod" className="flex-1 cursor-pointer">
-                        <div className="font-bold text-foreground">Cash on Delivery</div>
-                        <div className="text-sm text-muted-foreground">Pay when you receive the order</div>
-                      </label>
-                    </div>
-                  </RadioGroup>
-                </CardContent>
-              </Card>
-            </section>
-          </div>
-
-          {/* Order Summary */}
-          <div className="lg:sticky lg:top-24 h-fit">
-            <Card className="border-0 shadow-xl bg-white ring-1 ring-gray-100 overflow-hidden">
-              <CardHeader className="bg-gray-50/50 border-b border-gray-100 pb-4">
-                <CardTitle className="text-lg">Order Summary</CardTitle>
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Truck className="h-5 w-5 text-primary" />
+                  Shipping Address
+                </CardTitle>
               </CardHeader>
-              <CardContent className="p-6 space-y-6">
-                <div className="space-y-4 max-h-60 overflow-auto pr-2 custom-scrollbar">
-                  {cartItems.map((item, i) => (
-                    <div key={i} className="flex gap-3">
-                      <div className="h-16 w-16 rounded-lg bg-gray-100 relative overflow-hidden shrink-0 border">
-                        {/* Image placeholder if needed, using div for now or img tag */}
-                        <img src={item.image} alt={item.name} className="object-cover w-full h-full" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium truncate">{item.name}</p>
-                        <p className="text-xs text-muted-foreground">Qty: {item.quantity}</p>
-                        <p className="text-sm font-bold mt-1">₹{item.price * item.quantity}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="border-t border-dashed pt-4 space-y-3">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Subtotal</span>
-                    <span className="font-medium">₹{subtotal}</span>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="firstName">First Name</Label>
+                    <Input id="firstName" placeholder="John" />
                   </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Shipping</span>
-                    <span className="font-medium text-green-600">Free</span>
-                  </div>
-                  <div className="border-t pt-3 flex justify-between items-baseline">
-                    <span className="text-base font-bold">Total Amount</span>
-                    <span className="text-2xl font-bold text-purple-600">₹{total}</span>
+                  <div className="space-y-2">
+                    <Label htmlFor="lastName">Last Name</Label>
+                    <Input id="lastName" placeholder="Doe" />
                   </div>
                 </div>
-
-                <Button className="w-full h-12 text-lg bg-purple-600 hover:bg-purple-700 shadow-lg hover:shadow-xl transition-all">
-                  Place Order
-                </Button>
-
-                <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground bg-gray-50 p-2 rounded-lg">
-                  <Lock className="h-3 w-3" />
-                  Payments are 100% secure and encrypted
+                <div className="space-y-2">
+                  <Label htmlFor="address">Address</Label>
+                  <Input id="address" placeholder="123 Main St" />
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="city">City</Label>
+                    <Input id="city" placeholder="New York" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="zip">ZIP Code</Label>
+                    <Input id="zip" placeholder="10001" />
+                  </div>
                 </div>
               </CardContent>
             </Card>
+
+            {/* Payment Method */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <CreditCard className="h-5 w-5 text-primary" />
+                  Payment Method
+                </CardTitle>
+                <CardDescription>Select your preferred payment method.</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <RadioGroup value={paymentMethod} onValueChange={setPaymentMethod} className="grid gap-4">
+                  <Label
+                    htmlFor="razorpay"
+                    className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground [&:has([data-state=checked])]:border-primary"
+                  >
+                    <RadioGroupItem value="razorpay" id="razorpay" className="sr-only" />
+                    <div className="flex w-full items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Lock className="h-4 w-4" />
+                        <span className="font-semibold">Razorpay Secure</span>
+                      </div>
+                      <ShieldCheck className="h-4 w-4 text-green-500" />
+                    </div>
+                  </Label>
+                </RadioGroup>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Right Column - Order Summary */}
+          <div className="lg:col-span-1">
+            <Card className="sticky top-24">
+              <CardHeader>
+                <CardTitle>Order Summary</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">Subtotal</span>
+                  <span>₹{cartTotal}</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">Shipping</span>
+                  <span className="text-green-600">Free</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">Tax (18%)</span>
+                  <span>₹{tax}</span>
+                </div>
+                <Separator />
+                <div className="flex justify-between font-bold text-lg">
+                  <span>Total</span>
+                  <span>₹{total}</span>
+                </div>
+              </CardContent>
+              <CardFooter>
+                <Button
+                  className="w-full h-12 text-lg shadow-lg"
+                  onClick={handlePayment}
+                  disabled={loading}
+                >
+                  {loading ? "Processing..." : `Pay ₹${total}`}
+                </Button>
+              </CardFooter>
+            </Card>
+
+            <div className="mt-6 flex items-center justify-center gap-2 text-sm text-muted-foreground">
+              <Lock className="h-3 w-3" />
+              Secure Checkout powered by Razorpay
+            </div>
           </div>
         </div>
       </div>

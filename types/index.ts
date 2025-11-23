@@ -21,6 +21,21 @@ export interface Category {
   updated_at: string
 }
 
+export interface ProductVariant {
+  id: string
+  product_id: string
+  name: string // e.g., "Small - Red", "Large - Blue"
+  sku: string
+  price: number
+  compare_price?: number
+  stock: number
+  attributes: Record<string, string> // e.g., { size: "M", color: "Red" }
+  image?: string
+  is_active: boolean
+  created_at: string
+  updated_at: string
+}
+
 export interface Product {
   id: string
   name: string
@@ -40,8 +55,23 @@ export interface Product {
   seo_description?: string
   is_featured: boolean
   is_active: boolean
+  has_variants: boolean
+  variants?: ProductVariant[]
   created_at: string
   updated_at: string
+}
+
+export interface InventoryLog {
+  id: string
+  product_id: string
+  variant_id?: string
+  type: 'purchase' | 'sale' | 'adjustment' | 'return'
+  quantity: number
+  previous_stock: number
+  new_stock: number
+  reason?: string
+  user_id?: string
+  created_at: string
 }
 
 export interface Address {
@@ -79,7 +109,9 @@ export interface OrderItem {
   id: string
   order_id: string
   product_id: string
+  variant_id?: string
   product?: Product
+  variant?: ProductVariant
   quantity: number
   price: number
   total: number
@@ -109,6 +141,7 @@ export interface Order {
 
 export interface CartItem {
   product: Product
+  variant?: ProductVariant
   quantity: number
 }
 

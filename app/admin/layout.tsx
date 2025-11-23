@@ -1,9 +1,13 @@
 'use client'
 
 import Link from "next/link"
-import { LayoutDashboard, Package, FolderTree, ShoppingCart, Tag, Settings, Menu, X } from "lucide-react"
-import { useState } from "react"
+import { useRouter } from "next/navigation"
+import { LayoutDashboard, Package, FolderTree, ShoppingCart, Tag, Settings, Menu, X, LogOut } from "lucide-react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
+import { toast } from "sonner"
+
+export const dynamic = 'force-dynamic'
 
 const menuItems = [
   { icon: LayoutDashboard, label: 'Dashboard', href: '/admin' },
@@ -16,6 +20,51 @@ const menuItems = [
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+  const router = useRouter()
+
+  useEffect(() => {
+    checkAuth()
+  }, [])
+
+  const checkAuth = async () => {
+    try {
+      const response = await fetch("/api/admin/check-auth")
+      if (!response.ok) {
+        router.push("/admin/login")
+      } else {
+        setIsAuthenticated(true)
+      }
+    } catch (error) {
+      router.push("/admin/login")
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleLogout = async () => {
+    try {
+      await fetch("/api/admin/logout", { method: "POST" })
+      toast.success("Logged out successfully")
+      router.push("/admin/login")
+      router.refresh()
+    } catch (error) {
+      toast.error("Logout failed")
+    }
+  }
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    )
+  }
+
+  if (!isAuthenticated) {
+    return null
+  }
 
   return (
     <div className="flex min-h-screen">
@@ -45,11 +94,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         w-64 border-r bg-muted/40
         transform transition-transform duration-300 ease-in-out
         ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+        flex flex-col
       `}>
         <div className="p-4 sm:p-6">
           <h2 className="text-lg sm:text-xl font-bold">Admin Panel</h2>
         </div>
-        <nav className="space-y-1 px-3">
+        <nav className="space-y-1 px-3 flex-1">
           {menuItems.map((item) => (
             <Link
               key={item.href}
@@ -62,6 +112,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </Link>
           ))}
         </nav>
+        <div className="p-3 border-t">
+          <Button
+            variant="outline"
+            className="w-full justify-start"
+            onClick={handleLogout}
+          >
+            <LogOut className="h-4 w-4 mr-2" />
+            Logout
+          </Button>
+        </div>
       </aside>
 
       {/* Main Content */}
