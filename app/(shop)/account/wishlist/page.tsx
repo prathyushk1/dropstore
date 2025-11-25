@@ -1,54 +1,38 @@
-"use client"
-
-import { useState, useEffect } from "react"
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
+import { cookies } from "next/headers"
+import { redirect } from "next/navigation"
 import Link from "next/link"
-import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { ShoppingCart, Trash2, Star, ArrowRight, Heart } from "lucide-react"
-import { toast } from "sonner"
+import { ArrowRight } from "lucide-react"
+import WishlistClient from "@/components/account/wishlist-client"
 
 export const dynamic = 'force-dynamic'
 
-export default function WishlistPage() {
-  const [wishlistItems, setWishlistItems] = useState<any[]>([])
+export default async function WishlistPage() {
+  const supabase = createServerComponentClient({ cookies })
 
-  // Load wishlist from localStorage
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const savedWishlist = localStorage.getItem('wishlist')
-      if (savedWishlist) {
-        setWishlistItems(JSON.parse(savedWishlist))
-      }
-    }
-  }, [])
+  const { data: { user } } = await supabase.auth.getUser()
 
-  const handleRemove = (id: string) => {
-    const updatedWishlist = wishlistItems.filter(item => item.id !== id)
-    setWishlistItems(updatedWishlist)
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('wishlist', JSON.stringify(updatedWishlist))
-    }
-    toast.success("Removed from wishlist")
+  if (!user) {
+    redirect('/auth/login?next=/account/wishlist')
   }
 
-  const handleAddToCart = (item: any) => {
-    // Add to cart
-    if (typeof window !== 'undefined') {
-      const cart = JSON.parse(localStorage.getItem('cart') || '[]')
-      const existingItem = cart.find((i: any) => i.id === item.id)
-      
-      if (existingItem) {
-        existingItem.quantity += 1
-      } else {
-        cart.push({ ...item, quantity: 1 })
-      }
-      
-      localStorage.setItem('cart', JSON.stringify(cart))
-      toast.success("Added to cart")
-    }
-  }
+  const { data: wishlistItems } = await supabase
+    .from('wishlist')
+    .select(`
+      id,
+      product_id,
+      products (
+        id,
+        name,
+        price,
+        images,
+        stock,
+        rating
+      )
+    `)
+    .eq('user_id', user.id)
+    .order('created_at', { ascending: false })
 
   return (
     <div className="min-h-screen bg-background py-12">
@@ -57,7 +41,7 @@ export default function WishlistPage() {
           <div>
             <h1 className="text-3xl font-bold tracking-tight mb-2">My Wishlist</h1>
             <p className="text-muted-foreground">
-              {wishlistItems.length} items saved for later
+              {wishlistItems?.length || 0} items saved for later
             </p>
           </div>
           <Button variant="outline" asChild>
@@ -67,71 +51,7 @@ export default function WishlistPage() {
           </Button>
         </div>
 
-        {wishlistItems.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {wishlistItems.map((item) => (
-              <Card key={item.id} className="group overflow-hidden border-0 bg-white/50 backdrop-blur-sm ring-1 ring-gray-100 hover:shadow-xl transition-all duration-300">
-                <div className="aspect-square relative overflow-hidden bg-secondary/50">
-                  <Image
-                    src={item.image}
-                    alt={item.name}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                  <div className="absolute top-2 right-2 z-10">
-                    <Button
-                      size="icon"
-                      variant="destructive"
-                      className="h-8 w-8 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
-                      onClick={() => handleRemove(item.id)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </div>
-                  {!item.inStock && (
-                    <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
-                      <Badge variant="secondary" className="bg-white/90 text-black">Out of Stock</Badge>
-                    </div>
-                  )}
-                </div>
-                <CardContent className="p-4">
-                  <div className="flex items-center gap-1 mb-2">
-                    <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                    <span className="text-xs text-muted-foreground">{item.rating}</span>
-                  </div>
-                  <h3 className="font-semibold mb-1 line-clamp-1 group-hover:text-primary transition-colors">
-                    <Link href={`/products/${item.id}`}>{item.name}</Link>
-                  </h3>
-                  <div className="flex items-center justify-between mt-3">
-                    <span className="text-lg font-bold text-primary">₹{item.price}</span>
-                    <Button
-                      size="sm"
-                      disabled={!item.inStock}
-                      onClick={() => handleAddToCart(item.id)}
-                      className="rounded-full"
-                    >
-                      <ShoppingCart className="h-4 w-4 mr-2" />
-                      Add
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-20">
-            <div className="w-24 h-24 bg-secondary/50 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Star className="h-10 w-10 text-muted-foreground" />
-            </div>
-            <h2 className="text-2xl font-bold mb-2">Your wishlist is empty</h2>
-            <p className="text-muted-foreground mb-8">
-              Explore our products and save your favorites here.
-            </p>
-            <Button size="lg" asChild>
-              <Link href="/products">Start Shopping</Link>
-            </Button>
-          </div>
-        )}
+        <WishlistClient initialItems={wishlistItems || []} />
       </div>
     </div>
   )

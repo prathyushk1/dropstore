@@ -86,18 +86,18 @@ export default async function AccountPage() {
     year: 'numeric'
   })
 
-  // Transform orders for display
+  // Transform orders for display - simplified without nested data
   const recentOrders = orders?.map(order => ({
-    id: order.order_number,
+    id: order.order_number || `ORD-${order.id?.slice(0, 8)}`,
     date: new Date(order.created_at).toLocaleDateString('en-US', {
       year: 'numeric',
       month: '2-digit',
       day: '2-digit'
     }),
-    status: order.status.charAt(0).toUpperCase() + order.status.slice(1),
-    total: order.total,
-    items: order.order_items?.length || 0,
-    image: order.order_items?.[0]?.products?.images?.[0] || 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=100&q=80'
+    status: order.status ? order.status.charAt(0).toUpperCase() + order.status.slice(1) : 'Pending',
+    total: order.total || 0,
+    items: 0, // Will show 0 items for now
+    image: 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=100&q=80'
   })) || []
 
   return (
