@@ -2,6 +2,8 @@
 
 import { useState } from "react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 
 export const dynamic = 'force-dynamic'
 import { Button } from "@/components/ui/button"
@@ -10,6 +12,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { ArrowRight, Sparkles, Github, Mail, Facebook } from "lucide-react"
 import { PasswordStrength } from "@/components/auth/password-strength"
+import { toast } from "sonner"
 
 export default function SignupPage() {
   const [formData, setFormData] = useState({
@@ -19,13 +22,54 @@ export default function SignupPage() {
     confirmPassword: '',
   })
   const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter()
+  const supabase = createClientComponentClient()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+
+    // Validate passwords match
+    if (formData.password !== formData.confirmPassword) {
+      toast.error("Passwords don't match")
+      return
+    }
+
+    // Validate password strength
+    if (formData.password.length < 6) {
+      toast.error("Password must be at least 6 characters long")
+      return
+    }
+
     setIsLoading(true)
-    await new Promise(resolve => setTimeout(resolve, 1500))
-    console.log('Signup:', formData)
-    setIsLoading(false)
+
+    try {
+      // Sign up with Supabase
+      const { data, error } = await supabase.auth.signUp({
+        email: formData.email,
+        password: formData.password,
+        options: {
+          data: {
+            full_name: formData.name,
+          },
+        },
+      })
+
+      if (error) {
+        toast.error(error.message)
+        return
+      }
+
+      if (data.user) {
+        toast.success("Account created successfully! Please check your email to verify your account.")
+        // Redirect to login page
+        router.push('/auth/login')
+      }
+    } catch (error) {
+      console.error('Signup error:', error)
+      toast.error("Failed to create account. Please try again.")
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (

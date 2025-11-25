@@ -11,9 +11,9 @@ export function Footer() {
           <div className="space-y-4">
             <Link href="/" className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-purple-600 flex items-center justify-center text-white font-bold text-xl">
-                S
+                D
               </div>
-              <span className="text-2xl font-bold font-heading">ShopDrop</span>
+              <span className="text-2xl font-bold font-heading">DropStore</span>
             </Link>
             <p className="text-muted-foreground text-sm leading-relaxed">
               Your store description goes here. Customize this text to describe your business and what makes it unique.
@@ -98,7 +98,7 @@ export function Footer() {
         </div>
 
         <div className="border-t border-border/50 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
-          <p>© 2024 ShopDrop. All rights reserved.</p>
+          <p>© 2025 DropStore. All rights reserved.</p>
           <div className="flex gap-6">
             <Link href="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link>
             <Link href="/terms" className="hover:text-primary transition-colors">Terms of Service</Link>

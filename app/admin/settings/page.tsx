@@ -9,8 +9,8 @@ import { Textarea } from "@/components/ui/textarea"
 
 export default function AdminSettingsPage() {
   const [settings, setSettings] = useState({
-    storeName: 'ShopDrop',
-    storeEmail: 'support@shopdrop.com',
+    storeName: 'DropStore',
+    storeEmail: 'support@dropstore.com',
     storePhone: '+91 9876543210',
     storeAddress: '123 Main Street, Mumbai, India',
     currency: 'INR',

@@ -1,6 +1,8 @@
 'use client'
 
 import { useState } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 
 export const dynamic = 'force-dynamic'
 import Link from "next/link"
@@ -10,19 +12,46 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
 import { ArrowRight, CheckCircle2, Github, Mail, Facebook } from "lucide-react"
+import { toast } from "sonner"
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const supabase = createClientComponentClient()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
-    // Simulate login delay
-    await new Promise(resolve => setTimeout(resolve, 1500))
-    console.log('Login:', { email, password })
-    setIsLoading(false)
+
+    try {
+      // Sign in with Supabase
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      })
+
+      if (error) {
+        toast.error(error.message)
+        return
+      }
+
+      if (data.user) {
+        toast.success("Login successful!")
+
+        // Redirect to the intended page or home
+        const next = searchParams.get('next')
+        router.push(next || '/')
+        router.refresh()
+      }
+    } catch (error) {
+      console.error('Login error:', error)
+      toast.error("Failed to login. Please try again.")
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (

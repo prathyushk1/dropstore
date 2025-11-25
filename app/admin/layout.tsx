@@ -1,7 +1,7 @@
 'use client'
 
 import Link from "next/link"
-import { useRouter } from "next/navigation"
+import { useRouter, usePathname } from "next/navigation"
 import { LayoutDashboard, Package, FolderTree, ShoppingCart, Tag, Settings, Menu, X, LogOut } from "lucide-react"
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
@@ -23,21 +23,44 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const router = useRouter()
+  const pathname = usePathname()
 
   useEffect(() => {
     checkAuth()
   }, [])
 
   const checkAuth = async () => {
+    // Don't check auth on login pages to prevent redirect loops
+    if (pathname?.includes('/admin/login')) {
+      setIsLoading(false)
+      setIsAuthenticated(false)
+      return
+    }
+
     try {
-      const response = await fetch("/api/admin/check-auth")
+      // Add timeout to prevent hanging
+      const controller = new AbortController()
+      const timeoutId = setTimeout(() => controller.abort(), 5000) // 5 second timeout
+
+      const response = await fetch("/api/admin/check-auth", {
+        signal: controller.signal,
+        cache: 'no-store'
+      })
+
+      clearTimeout(timeoutId)
+
       if (!response.ok) {
+        console.log('Auth check failed, redirecting to login')
         router.push("/admin/login")
       } else {
         setIsAuthenticated(true)
       }
     } catch (error) {
-      router.push("/admin/login")
+      console.error('Auth check error:', error)
+      // Only redirect if not already on login page
+      if (!pathname?.includes('/admin/login')) {
+        router.push("/admin/login")
+      }
     } finally {
       setIsLoading(false)
     }

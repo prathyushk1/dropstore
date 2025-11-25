@@ -35,10 +35,10 @@ export function Header() {
 
           <Link href="/" className="flex items-center space-x-1 sm:space-x-2 group">
             <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-purple-600 to-pink-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-shadow">
-              <span className="text-white font-bold text-lg sm:text-xl">S</span>
+              <span className="text-white font-bold text-lg sm:text-xl">D</span>
             </div>
             <span className="font-bold text-lg sm:text-2xl bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-pink-600 hidden xs:inline">
-              ShopDrop
+              DropStore
             </span>
           </Link>
         </div>

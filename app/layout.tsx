@@ -15,7 +15,7 @@ const outfit = Outfit({
 })
 
 export const metadata: Metadata = {
-  title: "Dropshipping Store - Quality Products at Best Prices",
+  title: "DropStore - Quality Products at Best Prices",
   description: "Shop the latest trending products with fast shipping and great deals",
 }
 

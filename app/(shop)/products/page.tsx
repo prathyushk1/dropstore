@@ -66,27 +66,11 @@ export default async function ProductsPage({
 
       <div className="container py-8 sm:py-12 px-4">
         {/* Mobile Filter & Sort Bar */}
-        <div className="flex flex-col sm:flex-row gap-4 items-center justify-between mb-8 sticky top-16 z-30 bg-background/80 backdrop-blur-md p-4 rounded-2xl border shadow-sm lg:static lg:bg-transparent lg:p-0 lg:border-0 lg:shadow-none lg:z-auto">
-          <div className="flex items-center gap-2 w-full sm:w-auto">
-            <ProductFilters categories={categoriesData || []} />
-            <p className="text-muted-foreground text-sm hidden sm:block">
-              Showing <span className="font-medium text-foreground">{products.length}</span> results
-            </p>
-          </div>
-
-          <div className="flex items-center gap-4 w-full sm:w-auto">
-            <div className="relative flex-1 sm:w-64">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <form action="/products">
-                <Input
-                  name="search"
-                  defaultValue={search}
-                  placeholder="Search products..."
-                  className="pl-9 rounded-full border-2 focus:border-purple-500 transition-colors"
-                />
-              </form>
-            </div>
-          </div>
+        <div className="flex items-center justify-between mb-8 sticky top-16 z-30 bg-background/80 backdrop-blur-md p-4 rounded-2xl border shadow-sm lg:static lg:bg-transparent lg:p-0 lg:border-0 lg:shadow-none lg:z-auto">
+          <ProductFilters categories={categoriesData || []} />
+          <p className="text-muted-foreground text-sm">
+            Showing <span className="font-medium text-foreground">{products.length}</span> results
+          </p>
         </div>
 
         <div className="flex gap-8">
