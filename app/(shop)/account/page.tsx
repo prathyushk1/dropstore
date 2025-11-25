@@ -30,35 +30,46 @@ export default async function AccountPage() {
   }
 
   // Fetch user profile data
-  const { data: userData } = await supabase
-    .from('users')
-    .select('*')
-    .eq('id', user.id)
-    .single()
+  let userData = null
+  try {
+    const { data } = await supabase
+      .from('users')
+      .select('*')
+      .eq('id', user.id)
+      .single()
+    userData = data
+  } catch (error) {
+    console.error('Error fetching user data:', error)
+  }
 
-  // Fetch user's orders
-  const { data: orders } = await supabase
-    .from('orders')
-    .select(`
-      *,
-      order_items (
-        quantity,
-        product_id,
-        products (
-          name,
-          images
-        )
-      )
-    `)
-    .eq('user_id', user.id)
-    .order('created_at', { ascending: false })
-    .limit(2)
+  // Fetch user's orders with error handling
+  let orders = []
+  try {
+    const { data, error } = await supabase
+      .from('orders')
+      .select('*')
+      .eq('user_id', user.id)
+      .order('created_at', { ascending: false })
+      .limit(2)
+
+    if (!error && data) {
+      orders = data
+    }
+  } catch (error) {
+    console.error('Error fetching orders:', error)
+  }
 
   // Calculate total orders
-  const { count: totalOrders } = await supabase
-    .from('orders')
-    .select('*', { count: 'exact', head: true })
-    .eq('user_id', user.id)
+  let totalOrders = 0
+  try {
+    const { count } = await supabase
+      .from('orders')
+      .select('*', { count: 'exact', head: true })
+      .eq('user_id', user.id)
+    totalOrders = count || 0
+  } catch (error) {
+    console.error('Error counting orders:', error)
+  }
 
   // Get user initials
   const userName = userData?.name || user.email?.split('@')[0] || 'User'
@@ -105,9 +116,27 @@ export default async function AccountPage() {
           </form>
         </div>
 
+        {/* Mobile Navigation Menu */}
+        <div className="md:hidden mb-6 overflow-x-auto">
+          <div className="flex gap-2 pb-2">
+            {menuItems.map((item) => (
+              <Link key={item.href} href={item.href}>
+                <Button
+                  variant={item.active ? "default" : "outline"}
+                  size="sm"
+                  className={`whitespace-nowrap ${item.active ? 'bg-purple-600 hover:bg-purple-700' : ''}`}
+                >
+                  <item.icon className="mr-2 h-4 w-4" />
+                  {item.label}
+                </Button>
+              </Link>
+            ))}
+          </div>
+        </div>
+
         <div className="grid md:grid-cols-4 gap-8">
-          {/* Sidebar */}
-          <aside className="space-y-2">
+          {/* Sidebar - Hidden on mobile */}
+          <aside className="hidden md:block space-y-2">
             <Card className="overflow-hidden border-0 shadow-md ring-1 ring-gray-100">
               <CardContent className="p-2">
                 {menuItems.map((item) => (
@@ -126,8 +155,8 @@ export default async function AccountPage() {
             </Card>
           </aside>
 
-          {/* Main Content */}
-          <div className="md:col-span-3 space-y-6">
+          {/* Main Content - Full width on mobile, 3 cols on desktop */}
+          <div className="md:col-span-3 col-span-4 space-y-6">
             {/* Profile Overview */}
             <div className="grid md:grid-cols-3 gap-6">
               <Card className="md:col-span-2 border-0 shadow-md ring-1 ring-gray-100 bg-gradient-to-br from-purple-600 to-indigo-600 text-white">

@@ -1,29 +1,53 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
-
-export const dynamic = 'force-dynamic'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { ShoppingCart, Trash2, Star, ArrowRight } from "lucide-react"
+import { ShoppingCart, Trash2, Star, ArrowRight, Heart } from "lucide-react"
 import { toast } from "sonner"
 
-// Dummy wishlist data
-const wishlistItems = [
-  { id: '1', name: 'Wireless Earbuds Pro', price: 2999, image: 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=400', rating: 4.5, inStock: true },
-  { id: '2', name: 'Smart Watch Ultra', price: 8999, image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400', rating: 4.8, inStock: true },
-  { id: '3', name: 'Laptop Stand Aluminum', price: 1499, image: 'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=400', rating: 4.3, inStock: false },
-]
+export const dynamic = 'force-dynamic'
 
 export default function WishlistPage() {
+  const [wishlistItems, setWishlistItems] = useState<any[]>([])
+
+  // Load wishlist from localStorage
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const savedWishlist = localStorage.getItem('wishlist')
+      if (savedWishlist) {
+        setWishlistItems(JSON.parse(savedWishlist))
+      }
+    }
+  }, [])
+
   const handleRemove = (id: string) => {
+    const updatedWishlist = wishlistItems.filter(item => item.id !== id)
+    setWishlistItems(updatedWishlist)
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('wishlist', JSON.stringify(updatedWishlist))
+    }
     toast.success("Removed from wishlist")
   }
 
-  const handleAddToCart = (id: string) => {
-    toast.success("Added to cart")
+  const handleAddToCart = (item: any) => {
+    // Add to cart
+    if (typeof window !== 'undefined') {
+      const cart = JSON.parse(localStorage.getItem('cart') || '[]')
+      const existingItem = cart.find((i: any) => i.id === item.id)
+      
+      if (existingItem) {
+        existingItem.quantity += 1
+      } else {
+        cart.push({ ...item, quantity: 1 })
+      }
+      
+      localStorage.setItem('cart', JSON.stringify(cart))
+      toast.success("Added to cart")
+    }
   }
 
   return (
