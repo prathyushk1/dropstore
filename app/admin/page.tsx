@@ -4,13 +4,12 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { DollarSign, ShoppingCart, Package, Users } from "lucide-react"
 import { RecentActivity } from "@/components/admin/recent-activity"
 import { QuickActions } from "@/components/admin/quick-actions"
-import dynamicImport from "next/dynamic"
+import dynamic from "next/dynamic"
 import { useEffect, useState } from "react"
 
-export const dynamic = 'force-dynamic'
-
-const Overview = dynamicImport(() => import("@/components/admin/overview").then((mod) => mod.Overview), {
+const Overview = dynamic(() => import("@/components/admin/overview").then((mod) => mod.Overview), {
   ssr: false,
+  loading: () => <div className="h-[350px] flex items-center justify-center">Loading chart...</div>
 })
 
 export default function AdminDashboard() {
@@ -25,7 +24,7 @@ export default function AdminDashboard() {
     // Fetch real stats from API
     const fetchStats = async () => {
       try {
-        // You can implement API endpoints to fetch these stats
+        // TODO: Implement API endpoints to fetch these stats
         // For now, keeping them as placeholders
       } catch (error) {
         console.error('Failed to fetch stats:', error)
@@ -33,6 +32,7 @@ export default function AdminDashboard() {
     }
     fetchStats()
   }, [])
+
   return (
     <div className="space-y-8">
       <div>

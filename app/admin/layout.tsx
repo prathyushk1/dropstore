@@ -6,6 +6,7 @@ import { LayoutDashboard, Package, FolderTree, ShoppingCart, Tag, Settings, Menu
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { toast } from "sonner"
+import { ErrorBoundary } from "@/components/error-boundary"
 
 export const dynamic = 'force-dynamic'
 
@@ -18,7 +19,7 @@ const menuItems = [
   { icon: Settings, label: 'Settings', href: '/admin/settings' },
 ]
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+function AdminLayoutContent({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
@@ -27,10 +28,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   useEffect(() => {
     checkAuth()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const checkAuth = async () => {
-    // Don't check auth on login pages to prevent redirect loops
+    // Don't check auth on login pages
     if (pathname?.includes('/admin/login')) {
       setIsLoading(false)
       setIsAuthenticated(false)
@@ -38,29 +40,18 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     }
 
     try {
-      // Add timeout to prevent hanging
-      const controller = new AbortController()
-      const timeoutId = setTimeout(() => controller.abort(), 5000) // 5 second timeout
-
       const response = await fetch("/api/admin/check-auth", {
-        signal: controller.signal,
         cache: 'no-store'
       })
 
-      clearTimeout(timeoutId)
-
-      if (!response.ok) {
-        console.log('Auth check failed, redirecting to login')
-        router.push("/admin/login")
-      } else {
+      if (response.ok) {
         setIsAuthenticated(true)
+      } else {
+        router.push("/admin/login-simple")
       }
     } catch (error) {
       console.error('Auth check error:', error)
-      // Only redirect if not already on login page
-      if (!pathname?.includes('/admin/login')) {
-        router.push("/admin/login")
-      }
+      router.push("/admin/login-simple")
     } finally {
       setIsLoading(false)
     }
@@ -70,13 +61,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     try {
       await fetch("/api/admin/logout", { method: "POST" })
       toast.success("Logged out successfully")
-      router.push("/admin/login")
+      router.push("/admin/login-simple")
       router.refresh()
     } catch (error) {
       toast.error("Logout failed")
     }
   }
 
+  // Loading state
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -85,10 +77,25 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     )
   }
 
+  // Login pages - render without layout
   if (!isAuthenticated) {
-    return null
+    if (pathname?.includes('/admin/login')) {
+      return <main className="min-h-screen">{children}</main>
+    }
+
+    // Redirecting state
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center space-y-4">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        <p className="text-muted-foreground">Redirecting to login...</p>
+        <Button variant="link" onClick={() => router.push('/admin/login-simple')}>
+          Click here if not redirected
+        </Button>
+      </div>
+    )
   }
 
+  // Authenticated - render full admin layout
   return (
     <div className="flex min-h-screen">
       {/* Mobile Menu Button */}
@@ -150,5 +157,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* Main Content */}
       <main className="flex-1 p-4 sm:p-6 lg:p-8 pt-16 lg:pt-8">{children}</main>
     </div>
+  )
+}
+
+export default function AdminLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <ErrorBoundary>
+      <AdminLayoutContent>{children}</AdminLayoutContent>
+    </ErrorBoundary>
   )
 }
