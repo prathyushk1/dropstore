@@ -4,7 +4,7 @@ import { redirect } from "next/navigation"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { ArrowRight } from "lucide-react"
-import WishlistClient from "@/components/account/wishlist-client"
+import WishlistClient, { WishlistItem } from "@/components/account/wishlist-client"
 
 export const dynamic = 'force-dynamic'
 
@@ -51,7 +51,12 @@ export default async function WishlistPage() {
           </Button>
         </div>
 
-        <WishlistClient initialItems={wishlistItems || []} />
+        <WishlistClient initialItems={
+          (wishlistItems || []).map((item: any) => ({
+            ...item,
+            products: Array.isArray(item.products) ? item.products[0] : item.products
+          })) as WishlistItem[]
+        } />
       </div>
     </div>
   )

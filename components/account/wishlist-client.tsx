@@ -11,7 +11,7 @@ import { ShoppingCart, Trash2, Star, ArrowRight, Heart } from "lucide-react"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 
-interface WishlistItem {
+export interface WishlistItem {
     id: string
     product_id: string
     products: {
