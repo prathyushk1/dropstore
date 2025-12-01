@@ -47,7 +47,7 @@ export async function POST(request: NextRequest) {
                 cost_price: body.cost_price,
                 sku: body.sku,
                 stock: body.stock || 0,
-                category_id: body.category_id,
+                category_id: body.category_id || null,
                 images: body.images || [],
                 specifications: body.specifications,
                 is_featured: body.is_featured || false,
