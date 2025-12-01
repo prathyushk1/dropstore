@@ -1,11 +1,12 @@
 'use client'
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { DollarSign, ShoppingCart, Package, Users } from "lucide-react"
+import { DollarSign, ShoppingCart, Package, Users, Loader2 } from "lucide-react"
 import { RecentActivity } from "@/components/admin/recent-activity"
 import { QuickActions } from "@/components/admin/quick-actions"
 import dynamic from "next/dynamic"
 import { useEffect, useState } from "react"
+import { formatPrice } from "@/lib/utils"
 
 const Overview = dynamic(() => import("@/components/admin/overview").then((mod) => mod.Overview), {
   ssr: false,
@@ -13,25 +14,64 @@ const Overview = dynamic(() => import("@/components/admin/overview").then((mod) 
 })
 
 export default function AdminDashboard() {
+  const [loading, setLoading] = useState(true)
   const [stats, setStats] = useState([
-    { label: 'Total Revenue', value: '₹0', icon: DollarSign, change: '--' },
-    { label: 'Orders', value: '0', icon: ShoppingCart, change: '--' },
-    { label: 'Products', value: '0', icon: Package, change: '--' },
-    { label: 'Customers', value: '0', icon: Users, change: '--' },
+    { label: 'Total Revenue', value: '₹0', icon: DollarSign, change: '+0% from last month' },
+    { label: 'Orders', value: '0', icon: ShoppingCart, change: '+0% from last month' },
+    { label: 'Products', value: '0', icon: Package, change: '+0 new' },
+    { label: 'Customers', value: '0', icon: Users, change: '+0 new' },
   ])
 
   useEffect(() => {
-    // Fetch real stats from API
     const fetchStats = async () => {
       try {
-        // TODO: Implement API endpoints to fetch these stats
-        // For now, keeping them as placeholders
+        const response = await fetch('/api/admin/stats')
+        const data = await response.json()
+
+        if (response.ok) {
+          setStats([
+            {
+              label: 'Total Revenue',
+              value: formatPrice(data.revenue),
+              icon: DollarSign,
+              change: '+0% from last month' // TODO: Calculate growth
+            },
+            {
+              label: 'Orders',
+              value: data.orders.toString(),
+              icon: ShoppingCart,
+              change: '+0% from last month'
+            },
+            {
+              label: 'Products',
+              value: data.products.toString(),
+              icon: Package,
+              change: 'Active products'
+            },
+            {
+              label: 'Customers',
+              value: data.customers.toString(),
+              icon: Users,
+              change: 'Registered users'
+            },
+          ])
+        }
       } catch (error) {
         console.error('Failed to fetch stats:', error)
+      } finally {
+        setLoading(false)
       }
     }
     fetchStats()
   }, [])
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-96">
+        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+      </div>
+    )
+  }
 
   return (
     <div className="space-y-8">
@@ -52,7 +92,7 @@ export default function AdminDashboard() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{stat.value}</div>
-              <p className="text-xs text-muted-foreground">{stat.change} from last month</p>
+              <p className="text-xs text-muted-foreground">{stat.change}</p>
             </CardContent>
           </Card>
         ))}

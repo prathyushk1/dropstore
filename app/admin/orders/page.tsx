@@ -1,11 +1,11 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Eye, Printer, MoreHorizontal, Mail, Download } from "lucide-react"
+import { Eye, Printer, MoreHorizontal, Mail, Download, Loader2 } from "lucide-react"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,13 +19,22 @@ import {
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
 } from "@/components/ui/dropdown-menu"
+import { toast } from "sonner"
+import { formatPrice } from "@/lib/utils"
 
-const initialOrders = [
-  { id: 'ORD-001', customer: 'John Doe', email: 'john@example.com', total: 2999, status: 'delivered', date: '2024-01-15', items: 2 },
-  { id: 'ORD-002', customer: 'Jane Smith', email: 'jane@example.com', total: 8999, status: 'shipped', date: '2024-01-14', items: 1 },
-  { id: 'ORD-003', customer: 'Bob Johnson', email: 'bob@example.com', total: 1499, status: 'processing', date: '2024-01-14', items: 3 },
-  { id: 'ORD-004', customer: 'Alice Brown', email: 'alice@example.com', total: 5499, status: 'pending', date: '2024-01-13', items: 2 },
-]
+interface Order {
+  id: string
+  order_number: string
+  created_at: string
+  total: number
+  status: string
+  payment_status: string
+  user?: {
+    name: string
+    email: string
+  }
+  items?: any[]
+}
 
 const statusColors = {
   pending: 'bg-yellow-100 text-yellow-800',
@@ -36,8 +45,31 @@ const statusColors = {
 }
 
 export default function AdminOrdersPage() {
-  const [orders, setOrders] = useState(initialOrders)
+  const [orders, setOrders] = useState<Order[]>([])
+  const [loading, setLoading] = useState(true)
   const [selectedOrders, setSelectedOrders] = useState<string[]>([])
+
+  useEffect(() => {
+    fetchOrders()
+  }, [])
+
+  const fetchOrders = async () => {
+    try {
+      setLoading(true)
+      const response = await fetch('/api/admin/orders')
+      const data = await response.json()
+      if (response.ok) {
+        setOrders(data.orders || [])
+      } else {
+        toast.error('Failed to load orders')
+      }
+    } catch (error) {
+      console.error('Error fetching orders:', error)
+      toast.error('Failed to load orders')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const toggleSelectAll = () => {
     if (selectedOrders.length === orders.length) {
@@ -55,23 +87,59 @@ export default function AdminOrdersPage() {
     }
   }
 
-  const updateStatus = (id: string, newStatus: string) => {
-    setOrders(orders.map(order =>
-      order.id === id ? { ...order, status: newStatus } : order
-    ))
+  const updateStatus = async (id: string, newStatus: string) => {
+    try {
+      const response = await fetch('/api/admin/orders', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, status: newStatus }),
+      })
+
+      if (response.ok) {
+        toast.success(`Order status updated to ${newStatus}`)
+        fetchOrders()
+      } else {
+        toast.error('Failed to update order status')
+      }
+    } catch (error) {
+      console.error('Error updating status:', error)
+      toast.error('Failed to update order status')
+    }
   }
 
-  const handleBulkStatusUpdate = (newStatus: string) => {
-    setOrders(orders.map(order =>
-      selectedOrders.includes(order.id) ? { ...order, status: newStatus } : order
-    ))
-    setSelectedOrders([])
+  const handleBulkStatusUpdate = async (newStatus: string) => {
+    if (!confirm(`Update status to ${newStatus} for ${selectedOrders.length} orders?`)) return
+
+    try {
+      await Promise.all(
+        selectedOrders.map(id =>
+          fetch('/api/admin/orders', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id, status: newStatus }),
+          })
+        )
+      )
+      toast.success('Orders updated successfully')
+      setSelectedOrders([])
+      fetchOrders()
+    } catch (error) {
+      console.error('Error updating orders:', error)
+      toast.error('Failed to update orders')
+    }
   }
 
   const handlePrintInvoice = (id: string) => {
     console.log(`Printing invoice for ${id}`)
-    // In a real app, this would generate a PDF or open a print view
     window.print()
+  }
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-96">
+        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+      </div>
+    )
   }
 
   return (
@@ -131,78 +199,92 @@ export default function AdminOrdersPage() {
                       onCheckedChange={toggleSelectAll}
                     />
                   </th>
-                  <th className="text-left p-4 font-semibold">Order ID</th>
+                  <th className="text-left p-4 font-semibold">Order #</th>
                   <th className="text-left p-4 font-semibold">Customer</th>
                   <th className="text-left p-4 font-semibold">Date</th>
-                  <th className="text-left p-4 font-semibold">Items</th>
                   <th className="text-left p-4 font-semibold">Total</th>
                   <th className="text-left p-4 font-semibold">Status</th>
+                  <th className="text-left p-4 font-semibold">Payment</th>
                   <th className="text-right p-4 font-semibold">Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {orders.map((order) => (
-                  <tr key={order.id} className="border-b last:border-0 hover:bg-muted/50 transition-colors">
-                    <td className="p-4">
-                      <Checkbox
-                        checked={selectedOrders.includes(order.id)}
-                        onCheckedChange={() => toggleSelect(order.id)}
-                      />
-                    </td>
-                    <td className="p-4 font-medium">{order.id}</td>
-                    <td className="p-4">
-                      <div>{order.customer}</div>
-                      <div className="text-sm text-muted-foreground">{order.email}</div>
-                    </td>
-                    <td className="p-4 text-muted-foreground">{order.date}</td>
-                    <td className="p-4">{order.items}</td>
-                    <td className="p-4 font-semibold">₹{order.total}</td>
-                    <td className="p-4">
-                      <Badge className={statusColors[order.status as keyof typeof statusColors]}>
-                        {order.status}
-                      </Badge>
-                    </td>
-                    <td className="p-4">
-                      <div className="flex justify-end gap-2">
-                        <Button variant="ghost" size="icon" onClick={() => handlePrintInvoice(order.id)}>
-                          <Printer className="h-4 w-4" />
-                        </Button>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="icon">
-                              <MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <DropdownMenuItem>
-                              <Eye className="mr-2 h-4 w-4" /> View Details
-                            </DropdownMenuItem>
-                            <DropdownMenuItem>
-                              <Mail className="mr-2 h-4 w-4" /> Email Customer
-                            </DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuSub>
-                              <DropdownMenuSubTrigger>Update Status</DropdownMenuSubTrigger>
-                              <DropdownMenuSubContent>
-                                <DropdownMenuRadioGroup
-                                  value={order.status}
-                                  onValueChange={(value) => updateStatus(order.id, value)}
-                                >
-                                  <DropdownMenuRadioItem value="pending">Pending</DropdownMenuRadioItem>
-                                  <DropdownMenuRadioItem value="processing">Processing</DropdownMenuRadioItem>
-                                  <DropdownMenuRadioItem value="shipped">Shipped</DropdownMenuRadioItem>
-                                  <DropdownMenuRadioItem value="delivered">Delivered</DropdownMenuRadioItem>
-                                  <DropdownMenuRadioItem value="cancelled">Cancelled</DropdownMenuRadioItem>
-                                </DropdownMenuRadioGroup>
-                              </DropdownMenuSubContent>
-                            </DropdownMenuSub>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </div>
+                {orders.length === 0 ? (
+                  <tr>
+                    <td colSpan={8} className="p-8 text-center text-muted-foreground">
+                      No orders found
                     </td>
                   </tr>
-                ))}
+                ) : (
+                  orders.map((order) => (
+                    <tr key={order.id} className="border-b last:border-0 hover:bg-muted/50 transition-colors">
+                      <td className="p-4">
+                        <Checkbox
+                          checked={selectedOrders.includes(order.id)}
+                          onCheckedChange={() => toggleSelect(order.id)}
+                        />
+                      </td>
+                      <td className="p-4 font-medium">{order.order_number || order.id.slice(0, 8)}</td>
+                      <td className="p-4">
+                        <div>{order.user?.name || 'Guest'}</div>
+                        <div className="text-sm text-muted-foreground">{order.user?.email || '-'}</div>
+                      </td>
+                      <td className="p-4 text-muted-foreground">
+                        {new Date(order.created_at).toLocaleDateString()}
+                      </td>
+                      <td className="p-4 font-semibold">{formatPrice(order.total)}</td>
+                      <td className="p-4">
+                        <Badge className={statusColors[order.status as keyof typeof statusColors] || 'bg-gray-100 text-gray-800'}>
+                          {order.status}
+                        </Badge>
+                      </td>
+                      <td className="p-4">
+                        <Badge variant={order.payment_status === 'paid' ? 'default' : 'secondary'}>
+                          {order.payment_status}
+                        </Badge>
+                      </td>
+                      <td className="p-4">
+                        <div className="flex justify-end gap-2">
+                          <Button variant="ghost" size="icon" onClick={() => handlePrintInvoice(order.id)}>
+                            <Printer className="h-4 w-4" />
+                          </Button>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost" size="icon">
+                                <MoreHorizontal className="h-4 w-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                              <DropdownMenuItem>
+                                <Eye className="mr-2 h-4 w-4" /> View Details
+                              </DropdownMenuItem>
+                              <DropdownMenuItem>
+                                <Mail className="mr-2 h-4 w-4" /> Email Customer
+                              </DropdownMenuItem>
+                              <DropdownMenuSeparator />
+                              <DropdownMenuSub>
+                                <DropdownMenuSubTrigger>Update Status</DropdownMenuSubTrigger>
+                                <DropdownMenuSubContent>
+                                  <DropdownMenuRadioGroup
+                                    value={order.status}
+                                    onValueChange={(value) => updateStatus(order.id, value)}
+                                  >
+                                    <DropdownMenuRadioItem value="pending">Pending</DropdownMenuRadioItem>
+                                    <DropdownMenuRadioItem value="processing">Processing</DropdownMenuRadioItem>
+                                    <DropdownMenuRadioItem value="shipped">Shipped</DropdownMenuRadioItem>
+                                    <DropdownMenuRadioItem value="delivered">Delivered</DropdownMenuRadioItem>
+                                    <DropdownMenuRadioItem value="cancelled">Cancelled</DropdownMenuRadioItem>
+                                  </DropdownMenuRadioGroup>
+                                </DropdownMenuSubContent>
+                              </DropdownMenuSub>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>
