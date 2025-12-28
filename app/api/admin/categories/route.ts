@@ -1,19 +1,28 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
+import { createAdminClient } from '@/lib/supabase/admin'
 
 export const dynamic = 'force-dynamic'
+
+async function getSupabaseClient() {
+    const cookieStore = cookies()
+    const adminSession = cookieStore.get('admin_session')?.value
+
+    if (adminSession) {
+        const adminClient = createAdminClient()
+        if (adminClient) return adminClient
+    }
+
+    return createRouteHandlerClient({ cookies: () => cookieStore })
+}
 
 // GET all categories
 export async function GET(request: NextRequest) {
     try {
-        const supabase = createRouteHandlerClient({ cookies })
+        const supabase = await getSupabaseClient()
 
         // Fetch categories with product count
-        // Note: Supabase doesn't support count in select easily without a function or separate query
-        // For now, we'll fetch categories and we can fetch counts separately or use a view if needed
-        // Or we can just fetch categories and let the client handle it or do a join
-
         const { data: categories, error } = await supabase
             .from('categories')
             .select('*')
@@ -34,7 +43,7 @@ export async function GET(request: NextRequest) {
 // POST - Create new category
 export async function POST(request: NextRequest) {
     try {
-        const supabase = createRouteHandlerClient({ cookies })
+        const supabase = await getSupabaseClient()
         const body = await request.json()
 
         const { data: category, error } = await supabase
@@ -63,7 +72,7 @@ export async function POST(request: NextRequest) {
 // DELETE - Delete category
 export async function DELETE(request: NextRequest) {
     try {
-        const supabase = createRouteHandlerClient({ cookies })
+        const supabase = await getSupabaseClient()
         const { searchParams } = new URL(request.url)
         const id = searchParams.get('id')
 
@@ -94,7 +103,7 @@ export async function DELETE(request: NextRequest) {
 // PUT - Update category
 export async function PUT(request: NextRequest) {
     try {
-        const supabase = createRouteHandlerClient({ cookies })
+        const supabase = await getSupabaseClient()
         const body = await request.json()
         const { id, ...updates } = body
 

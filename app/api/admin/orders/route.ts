@@ -1,17 +1,26 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
+import { createAdminClient } from '@/lib/supabase/admin'
 
 export const dynamic = 'force-dynamic'
+
+async function getSupabaseClient() {
+    const cookieStore = cookies()
+    const adminSession = cookieStore.get('admin_session')?.value
+
+    if (adminSession) {
+        const adminClient = createAdminClient()
+        if (adminClient) return adminClient
+    }
+
+    return createRouteHandlerClient({ cookies: () => cookieStore })
+}
 
 // GET all orders
 export async function GET(request: NextRequest) {
     try {
-        const supabase = createRouteHandlerClient({ cookies })
-
-        // Fetch orders with user details
-        // Note: We need to be careful with joins if the relationship isn't perfect
-        // But assuming user_id references auth.users or public.users
+        const supabase = await getSupabaseClient()
 
         const { data: orders, error } = await supabase
             .from('orders')
@@ -36,27 +45,23 @@ export async function GET(request: NextRequest) {
 // PUT - Update order status
 export async function PUT(request: NextRequest) {
     try {
-        const supabase = createRouteHandlerClient({ cookies })
+        const supabase = await getSupabaseClient()
         const body = await request.json()
-        const { id, status, payment_status } = body
+        const { id, status } = body
 
-        if (!id) {
+        if (!id || !status) {
             return NextResponse.json(
-                { error: 'Order ID is required' },
+                { error: 'Order ID and status are required' },
                 { status: 400 }
             )
         }
 
-        const updates: any = {
-            updated_at: new Date().toISOString(),
-        }
-
-        if (status) updates.status = status
-        if (payment_status) updates.payment_status = payment_status
-
         const { data: order, error } = await supabase
             .from('orders')
-            .update(updates)
+            .update({
+                status,
+                updated_at: new Date().toISOString(),
+            })
             .eq('id', id)
             .select()
             .single()

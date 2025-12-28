@@ -58,10 +58,10 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-background py-12 px-4 sm:px-6 lg:px-8">
       {/* Dynamic Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/20 via-purple-500/20 to-pink-500/20" />
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/30 rounded-full blur-3xl animate-pulse mix-blend-multiply" />
-      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl animate-pulse delay-700 mix-blend-multiply" />
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/30 rounded-full blur-3xl morph-blob morph-blob-1" />
+      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl morph-blob morph-blob-2" />
 
-      <Card className="w-full max-w-md relative z-10 border-white/20 bg-white/70 backdrop-blur-xl shadow-2xl ring-1 ring-white/50">
+      <Card className="w-full max-w-md relative z-10 border-white/20 bg-white/70 backdrop-blur-xl depth-shadow-lg ring-1 ring-white/50 card-3d">
         <CardHeader className="space-y-1 text-center pb-8">
           <div className="flex justify-center mb-4">
             <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center text-white shadow-lg">
@@ -119,7 +119,7 @@ export default function LoginPage() {
 
             <Button
               type="submit"
-              className="w-full h-11 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 shadow-lg transition-all hover:scale-[1.02]"
+              className="w-full h-11 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 btn-3d"
               disabled={isLoading}
             >
               {isLoading ? (

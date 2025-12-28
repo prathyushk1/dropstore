@@ -1,13 +1,26 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
+import { createAdminClient } from '@/lib/supabase/admin'
 
 export const dynamic = 'force-dynamic'
+
+async function getSupabaseClient() {
+    const cookieStore = cookies()
+    const adminSession = cookieStore.get('admin_session')?.value
+
+    if (adminSession) {
+        const adminClient = createAdminClient()
+        if (adminClient) return adminClient
+    }
+
+    return createRouteHandlerClient({ cookies: () => cookieStore })
+}
 
 // GET all coupons
 export async function GET(request: NextRequest) {
     try {
-        const supabase = createRouteHandlerClient({ cookies })
+        const supabase = await getSupabaseClient()
 
         const { data: coupons, error } = await supabase
             .from('coupons')
@@ -29,7 +42,7 @@ export async function GET(request: NextRequest) {
 // POST - Create new coupon
 export async function POST(request: NextRequest) {
     try {
-        const supabase = createRouteHandlerClient({ cookies })
+        const supabase = await getSupabaseClient()
         const body = await request.json()
 
         const { data: coupon, error } = await supabase
@@ -39,10 +52,9 @@ export async function POST(request: NextRequest) {
                 type: body.type,
                 value: body.value,
                 min_order_value: body.min_order_value || 0,
-                max_discount: body.max_discount,
                 usage_limit: body.usage_limit,
                 expires_at: body.expires_at,
-                is_active: body.is_active !== false,
+                is_active: true,
             })
             .select()
             .single()
@@ -62,7 +74,7 @@ export async function POST(request: NextRequest) {
 // DELETE - Delete coupon
 export async function DELETE(request: NextRequest) {
     try {
-        const supabase = createRouteHandlerClient({ cookies })
+        const supabase = await getSupabaseClient()
         const { searchParams } = new URL(request.url)
         const id = searchParams.get('id')
 

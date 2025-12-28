@@ -83,7 +83,7 @@ export default function AdminDashboard() {
       {/* Stats Grid */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {stats.map((stat) => (
-          <Card key={stat.label}>
+          <Card key={stat.label} className="card-3d-subtle depth-shadow">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
                 {stat.label}
@@ -106,7 +106,7 @@ export default function AdminDashboard() {
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
         {/* Revenue Chart */}
-        <Card className="col-span-4">
+        <Card className="col-span-4 depth-shadow-lg card-3d-subtle">
           <CardHeader>
             <CardTitle>Overview</CardTitle>
             <CardDescription>
@@ -119,7 +119,7 @@ export default function AdminDashboard() {
         </Card>
 
         {/* Recent Activity */}
-        <Card className="col-span-3">
+        <Card className="col-span-3 depth-shadow-lg card-3d-subtle">
           <CardHeader>
             <CardTitle>Recent Activity</CardTitle>
             <CardDescription>

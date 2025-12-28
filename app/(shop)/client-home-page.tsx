@@ -163,8 +163,8 @@ export default function ClientHomePage({ trendingProducts, categories }: ClientH
                         ))}
                     </div>
 
-                    {/* Desktop: Premium Grid Cards */}
-                    <div className="hidden md:grid grid-cols-4 gap-6">
+                    {/* Desktop: Premium 3D Grid Cards */}
+                    <div className="hidden md:grid grid-cols-4 gap-6 perspective-container">
                         {categories.map((category, index) => (
                             <motion.div
                                 key={category.slug}
@@ -173,7 +173,7 @@ export default function ClientHomePage({ trendingProducts, categories }: ClientH
                                 transition={{ duration: 0.5, delay: index * 0.1 }}
                                 viewport={{ once: true }}
                             >
-                                <Link href={`/products?category=${category.slug}`} className="group relative overflow-hidden rounded-[2rem] aspect-[3/4] shadow-md hover:shadow-2xl transition-all duration-500 block h-full">
+                                <Link href={`/products?category=${category.slug}`} className="group relative overflow-hidden rounded-[2rem] aspect-[3/4] depth-shadow hover:shadow-2xl transition-all duration-500 block h-full card-3d shine-effect">
                                     <Image
                                         src={category.image}
                                         alt={category.name}
@@ -206,7 +206,7 @@ export default function ClientHomePage({ trendingProducts, categories }: ClientH
                             <p className="text-muted-foreground text-lg">Don't miss out on our best-selling items of the week.</p>
                         </div>
 
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 perspective-container">
                             {trendingProducts.map((product, index) => (
                                 <motion.div
                                     key={product.id}
@@ -215,7 +215,7 @@ export default function ClientHomePage({ trendingProducts, categories }: ClientH
                                     transition={{ duration: 0.5, delay: index * 0.1 }}
                                     viewport={{ once: true }}
                                 >
-                                    <Card className="group border-0 bg-card/50 backdrop-blur-sm hover:bg-card transition-all duration-300 overflow-hidden rounded-[2rem] shadow-sm hover:shadow-xl">
+                                    <Card className="group border-0 bg-card/50 backdrop-blur-sm hover:bg-card transition-all duration-300 overflow-hidden rounded-[2rem] depth-shadow card-3d-subtle shine-effect">
                                         <div className="relative aspect-square overflow-hidden bg-secondary/50">
                                             {product.discount > 0 && (
                                                 <Badge className="absolute top-4 left-4 bg-red-500 text-white border-0 z-10 font-bold px-3">
@@ -272,7 +272,7 @@ export default function ClientHomePage({ trendingProducts, categories }: ClientH
                         </div>
 
                         <div className="mt-16 text-center">
-                            <Button size="lg" className="rounded-full px-10 h-14 text-lg shadow-xl shadow-primary/20 hover:shadow-primary/40 transition-all hover:scale-105" asChild>
+                            <Button size="lg" className="rounded-full px-10 h-14 text-lg btn-3d" asChild>
                                 <Link href="/products">View All Products</Link>
                             </Button>
                         </div>
@@ -286,7 +286,7 @@ export default function ClientHomePage({ trendingProducts, categories }: ClientH
                         whileInView={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.8 }}
                         viewport={{ once: true }}
-                        className="relative rounded-[3rem] overflow-hidden bg-primary px-6 py-16 md:px-16 md:py-24 text-center shadow-2xl shadow-primary/20"
+                        className="relative rounded-[3rem] overflow-hidden bg-primary px-6 py-16 md:px-16 md:py-24 text-center depth-shadow-lg pulse-glow"
                     >
                         {/* Background Pattern */}
                         <div className="absolute inset-0 opacity-20 mix-blend-overlay">
@@ -308,7 +308,7 @@ export default function ClientHomePage({ trendingProducts, categories }: ClientH
                                     placeholder="Enter your email address"
                                     className="flex-1 h-14 px-8 rounded-full bg-white/10 border border-white/20 text-white placeholder:text-white/60 focus:outline-none focus:ring-2 focus:ring-white/50 backdrop-blur-md transition-all"
                                 />
-                                <Button size="lg" className="h-14 px-10 rounded-full bg-white text-primary hover:bg-white/90 font-bold shadow-xl hover:scale-105 transition-all">
+                                <Button size="lg" className="h-14 px-10 rounded-full bg-white text-primary hover:bg-white/90 font-bold btn-3d">
                                     Subscribe
                                 </Button>
                             </form>

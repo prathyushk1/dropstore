@@ -137,7 +137,7 @@ export default async function AccountPage() {
         <div className="grid md:grid-cols-4 gap-8">
           {/* Sidebar - Hidden on mobile */}
           <aside className="hidden md:block space-y-2">
-            <Card className="overflow-hidden border-0 shadow-md ring-1 ring-gray-100">
+            <Card className="overflow-hidden border-0 depth-shadow-lg ring-1 ring-gray-100">
               <CardContent className="p-2">
                 {menuItems.map((item) => (
                   <Link key={item.href} href={item.href}>
@@ -159,7 +159,7 @@ export default async function AccountPage() {
           <div className="md:col-span-3 col-span-4 space-y-6">
             {/* Profile Overview */}
             <div className="grid md:grid-cols-3 gap-6">
-              <Card className="md:col-span-2 border-0 shadow-md ring-1 ring-gray-100 bg-gradient-to-br from-purple-600 to-indigo-600 text-white">
+              <Card className="md:col-span-2 border-0 depth-shadow-lg ring-1 ring-gray-100 bg-gradient-to-br from-purple-600 to-indigo-600 text-white card-3d">
                 <CardContent className="p-6">
                   <div className="flex items-start justify-between mb-6">
                     <div className="flex items-center gap-4">
@@ -195,7 +195,7 @@ export default async function AccountPage() {
                 </CardContent>
               </Card>
 
-              <Card className="border-0 shadow-md ring-1 ring-gray-100 flex flex-col justify-center items-center p-6 text-center">
+              <Card className="border-0 depth-shadow ring-1 ring-gray-100 flex flex-col justify-center items-center p-6 text-center card-3d-subtle">
                 <div className="h-12 w-12 rounded-full bg-green-100 flex items-center justify-center text-green-600 mb-3">
                   <Package className="h-6 w-6" />
                 </div>
@@ -208,7 +208,7 @@ export default async function AccountPage() {
             </div>
 
             {/* Recent Orders */}
-            <Card className="border-0 shadow-md ring-1 ring-gray-100">
+            <Card className="border-0 depth-shadow-lg ring-1 ring-gray-100 card-3d-subtle">
               <CardHeader className="flex flex-row items-center justify-between border-b border-gray-50 pb-4">
                 <CardTitle className="text-lg">Recent Orders</CardTitle>
                 <Button variant="ghost" size="sm" className="text-purple-600 hover:text-purple-700 hover:bg-purple-50" asChild>
@@ -265,7 +265,7 @@ export default async function AccountPage() {
             {/* Quick Actions */}
             <div className="grid sm:grid-cols-2 gap-6">
               <Link href="/account/addresses">
-                <Card className="group hover:shadow-lg transition-all duration-300 cursor-pointer border-0 shadow-sm ring-1 ring-gray-100">
+                <Card className="group hover:shadow-lg transition-all duration-300 cursor-pointer border-0 depth-shadow ring-1 ring-gray-100 card-3d-subtle">
                   <CardContent className="p-6 flex items-center gap-4">
                     <div className="h-12 w-12 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 group-hover:scale-110 transition-transform">
                       <MapPin className="h-6 w-6" />
@@ -279,7 +279,7 @@ export default async function AccountPage() {
                 </Card>
               </Link>
               <Link href="/account/wishlist">
-                <Card className="group hover:shadow-lg transition-all duration-300 cursor-pointer border-0 shadow-sm ring-1 ring-gray-100">
+                <Card className="group hover:shadow-lg transition-all duration-300 cursor-pointer border-0 depth-shadow ring-1 ring-gray-100 card-3d-subtle">
                   <CardContent className="p-6 flex items-center gap-4">
                     <div className="h-12 w-12 rounded-full bg-red-50 flex items-center justify-center text-red-500 group-hover:scale-110 transition-transform">
                       <Heart className="h-6 w-6" />

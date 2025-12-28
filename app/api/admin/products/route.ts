@@ -1,13 +1,26 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
+import { createAdminClient } from '@/lib/supabase/admin'
 
 export const dynamic = 'force-dynamic'
+
+async function getSupabaseClient() {
+    const cookieStore = cookies()
+    const adminSession = cookieStore.get('admin_session')?.value
+
+    if (adminSession) {
+        const adminClient = createAdminClient()
+        if (adminClient) return adminClient
+    }
+
+    return createRouteHandlerClient({ cookies: () => cookieStore })
+}
 
 // GET all products
 export async function GET(request: NextRequest) {
     try {
-        const supabase = createRouteHandlerClient({ cookies })
+        const supabase = await getSupabaseClient()
 
         const { data: products, error } = await supabase
             .from('products')
@@ -32,7 +45,7 @@ export async function GET(request: NextRequest) {
 // POST - Create new product
 export async function POST(request: NextRequest) {
     try {
-        const supabase = createRouteHandlerClient({ cookies })
+        const supabase = await getSupabaseClient()
         const body = await request.json()
 
         const { data: product, error } = await supabase
@@ -71,7 +84,7 @@ export async function POST(request: NextRequest) {
 // DELETE - Delete product
 export async function DELETE(request: NextRequest) {
     try {
-        const supabase = createRouteHandlerClient({ cookies })
+        const supabase = await getSupabaseClient()
         const { searchParams } = new URL(request.url)
         const id = searchParams.get('id')
 
@@ -102,7 +115,7 @@ export async function DELETE(request: NextRequest) {
 // PUT - Update product
 export async function PUT(request: NextRequest) {
     try {
-        const supabase = createRouteHandlerClient({ cookies })
+        const supabase = await getSupabaseClient()
         const body = await request.json()
         const { id, ...updates } = body
 

@@ -124,7 +124,7 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
         w-64 border-r bg-muted/40
         transform transition-transform duration-300 ease-in-out
         ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
-        flex flex-col
+        flex flex-col depth-shadow-lg
       `}>
         <div className="p-4 sm:p-6">
           <h2 className="text-lg sm:text-xl font-bold">Admin Panel</h2>

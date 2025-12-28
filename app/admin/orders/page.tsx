@@ -150,7 +150,7 @@ export default function AdminOrdersPage() {
           <p className="text-muted-foreground">Manage customer orders</p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline">
+          <Button variant="outline" className="btn-3d">
             <Download className="mr-2 h-4 w-4" />
             Export
           </Button>
@@ -187,7 +187,7 @@ export default function AdminOrdersPage() {
         </div>
       )}
 
-      <Card>
+      <Card className="depth-shadow-lg card-3d-subtle">
         <CardContent className="p-0">
           <div className="overflow-x-auto">
             <table className="w-full">

@@ -115,7 +115,7 @@ export default function CheckoutPage() {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <Confetti />
         <div className="text-center space-y-4 animate-in fade-in zoom-in duration-500">
-          <div className="h-20 w-20 bg-green-100 rounded-full flex items-center justify-center mx-auto">
+          <div className="h-20 w-20 bg-green-100 rounded-full flex items-center justify-center mx-auto float-animation pulse-glow">
             <CheckCircle2 className="h-10 w-10 text-green-600" />
           </div>
           <h1 className="text-3xl font-bold">Order Confirmed!</h1>
@@ -146,7 +146,7 @@ export default function CheckoutPage() {
           {/* Left Column - Forms */}
           <div className="lg:col-span-2 space-y-8">
             {/* Shipping Address */}
-            <Card>
+            <Card className="depth-shadow card-3d-subtle">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Truck className="h-5 w-5 text-primary" />
@@ -182,7 +182,7 @@ export default function CheckoutPage() {
             </Card>
 
             {/* Payment Method */}
-            <Card>
+            <Card className="depth-shadow card-3d-subtle">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <CreditCard className="h-5 w-5 text-primary" />
@@ -212,7 +212,7 @@ export default function CheckoutPage() {
 
           {/* Right Column - Order Summary */}
           <div className="lg:col-span-1">
-            <Card className="sticky top-24">
+            <Card className="sticky top-24 depth-shadow-lg glass-3d">
               <CardHeader>
                 <CardTitle>Order Summary</CardTitle>
               </CardHeader>
@@ -237,7 +237,7 @@ export default function CheckoutPage() {
               </CardContent>
               <CardFooter>
                 <Button
-                  className="w-full h-12 text-lg shadow-lg"
+                  className="w-full h-12 text-lg btn-3d"
                   onClick={handlePayment}
                   disabled={loading}
                 >

@@ -12,7 +12,7 @@ import { Minus, Plus, Trash2, ShoppingBag, ArrowRight, ShieldCheck, Truck } from
 
 export default function CartPage() {
   const [cartItems, setCartItems] = useState<any[]>([])
-  
+
   // Load cart from localStorage on mount
   useState(() => {
     if (typeof window !== 'undefined') {
@@ -52,14 +52,14 @@ export default function CartPage() {
   if (cartItems.length === 0) {
     return (
       <div className="min-h-[60vh] flex flex-col items-center justify-center container py-16">
-        <div className="w-32 h-32 bg-purple-50 rounded-full flex items-center justify-center mb-6 animate-pulse">
+        <div className="w-32 h-32 bg-purple-50 rounded-full flex items-center justify-center mb-6 float-animation">
           <ShoppingBag className="h-16 w-16 text-purple-300" />
         </div>
         <h1 className="text-3xl font-bold mb-2 text-foreground">Your cart is empty</h1>
         <p className="text-muted-foreground mb-8 max-w-md text-center">
           Looks like you haven't added anything to your cart yet. Explore our premium collection and find something you love.
         </p>
-        <Button size="lg" className="bg-purple-600 hover:bg-purple-700 shadow-lg hover:shadow-xl transition-all" asChild>
+        <Button size="lg" className="bg-purple-600 hover:bg-purple-700 btn-3d" asChild>
           <Link href="/products">Start Shopping</Link>
         </Button>
       </div>
@@ -82,7 +82,7 @@ export default function CartPage() {
             {cartItems.map((item) => (
               <div
                 key={item.id}
-                className="group flex flex-col sm:flex-row gap-6 p-6 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300"
+                className="group flex flex-col sm:flex-row gap-6 p-6 bg-white rounded-2xl border border-gray-100 depth-shadow card-3d-subtle transition-all duration-300"
               >
                 <div className="relative w-full sm:w-32 h-32 rounded-xl overflow-hidden bg-gray-50 shrink-0 border">
                   <Image
@@ -148,7 +148,7 @@ export default function CartPage() {
 
           {/* Order Summary */}
           <div className="lg:sticky lg:top-24 h-fit">
-            <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-md ring-1 ring-gray-100 overflow-hidden">
+            <Card className="border-0 depth-shadow-lg bg-white/80 backdrop-blur-md ring-1 ring-gray-100 overflow-hidden glass-3d">
               <div className="h-2 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500" />
               <CardContent className="p-6 sm:p-8">
                 <h2 className="text-xl font-bold mb-6">Order Summary</h2>
@@ -189,7 +189,7 @@ export default function CartPage() {
                   </div>
                 </div>
 
-                <Button className="w-full h-12 text-lg bg-purple-600 hover:bg-purple-700 shadow-lg hover:shadow-xl transition-all group" asChild>
+                <Button className="w-full h-12 text-lg bg-purple-600 hover:bg-purple-700 btn-3d group" asChild>
                   <Link href="/checkout">
                     Proceed to Checkout
                     <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />

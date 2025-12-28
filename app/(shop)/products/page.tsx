@@ -48,14 +48,16 @@ export default async function ProductsPage({
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Page Header */}
+      {/* Page Header - 3D Enhanced */}
       <div className="relative bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 py-12 sm:py-20 text-center overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
+        <div className="absolute top-0 left-1/4 w-64 h-64 bg-white/10 rounded-full blur-3xl morph-blob morph-blob-1"></div>
+        <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-white/10 rounded-full blur-3xl morph-blob morph-blob-2"></div>
         <div className="absolute top-0 left-1/4 w-64 h-64 bg-white/10 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-white/10 rounded-full blur-3xl animate-pulse delay-700"></div>
 
         <div className="container relative z-10 px-4">
-          <h1 className="text-3xl sm:text-5xl font-bold text-white mb-4 tracking-tight">
+          <h1 className="text-3xl sm:text-5xl font-bold text-white mb-4 tracking-tight text-3d">
             {category ? categoriesData?.find(c => c.slug === category)?.name || 'Products' : 'All Products'}
           </h1>
           <p className="text-blue-100 text-lg max-w-2xl mx-auto">
@@ -85,10 +87,10 @@ export default async function ProductsPage({
                 <p className="text-muted-foreground mt-2">Try adjusting your filters or search terms.</p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 perspective-container">
                 {products.map((product) => (
                   <Link key={product.id} href={`/products/${product.id}`}>
-                    <Card className="group h-full border-0 bg-white/50 backdrop-blur-sm hover:bg-white shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden rounded-2xl ring-1 ring-gray-100 hover:ring-purple-100">
+                    <Card className="group h-full border-0 bg-white/50 backdrop-blur-sm hover:bg-white transition-all duration-300 overflow-hidden rounded-2xl ring-1 ring-gray-100 hover:ring-purple-100 card-3d-subtle depth-shadow shine-effect">
                       <div className="aspect-[4/5] relative overflow-hidden bg-gray-100">
                         {product.new && (
                           <Badge className="absolute top-3 left-3 bg-blue-500 hover:bg-blue-600 text-white border-0 z-10 shadow-lg">
@@ -112,7 +114,7 @@ export default async function ProductsPage({
 
                         {/* Quick Actions */}
                         <div className="absolute bottom-4 left-4 right-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 flex gap-2">
-                          <Button className="flex-1 bg-white text-purple-900 hover:bg-purple-50 shadow-lg font-medium">
+                          <Button className="flex-1 bg-white text-purple-900 hover:bg-purple-50 shadow-lg font-medium btn-3d">
                             Add to Cart
                           </Button>
                         </div>
@@ -160,7 +162,7 @@ export default async function ProductsPage({
             {products.length > 0 && (
               <div className="mt-12 flex justify-center gap-2">
                 <Button variant="outline" disabled>Previous</Button>
-                <Button variant="outline" className="bg-purple-600 text-white border-purple-600 hover:bg-purple-700 hover:text-white">1</Button>
+                <Button variant="outline" className="bg-purple-600 text-white border-purple-600 hover:bg-purple-700 hover:text-white btn-3d">1</Button>
                 <Button variant="outline">2</Button>
                 <Button variant="outline">Next</Button>
               </div>

@@ -49,7 +49,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
         <div className="grid md:grid-cols-2 gap-8 lg:gap-16">
           {/* Product Gallery */}
           <div className="space-y-4">
-            <div className="relative aspect-square rounded-3xl overflow-hidden bg-secondary/20 border shadow-sm">
+            <div className="relative aspect-square rounded-3xl overflow-hidden bg-secondary/20 border depth-shadow-lg card-3d">
               {discount > 0 && (
                 <Badge className="absolute top-4 left-4 bg-red-500 text-white border-0 z-10 text-lg px-3 py-1">
                   -{discount}%
@@ -118,7 +118,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
             {/* Actions */}
             <div className="space-y-6">
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button size="lg" className="flex-1 h-14 text-lg rounded-full shadow-xl shadow-primary/20 hover:shadow-primary/30 transition-all hover:scale-[1.02]">
+                <Button size="lg" className="flex-1 h-14 text-lg rounded-full btn-3d">
                   <ShoppingCart className="mr-2 h-5 w-5" />
                   Add to Cart
                 </Button>
@@ -132,15 +132,15 @@ export default async function ProductPage({ params }: { params: { id: string } }
 
               {/* Trust Badges */}
               <div className="grid grid-cols-3 gap-4 pt-6">
-                <div className="flex flex-col items-center text-center gap-2 p-4 rounded-2xl bg-secondary/30">
+                <div className="flex flex-col items-center text-center gap-2 p-4 rounded-2xl bg-secondary/30 depth-shadow card-3d-subtle">
                   <Truck className="h-6 w-6 text-primary" />
                   <span className="text-xs font-medium">Free Shipping</span>
                 </div>
-                <div className="flex flex-col items-center text-center gap-2 p-4 rounded-2xl bg-secondary/30">
+                <div className="flex flex-col items-center text-center gap-2 p-4 rounded-2xl bg-secondary/30 depth-shadow card-3d-subtle">
                   <Shield className="h-6 w-6 text-primary" />
                   <span className="text-xs font-medium">2 Year Warranty</span>
                 </div>
-                <div className="flex flex-col items-center text-center gap-2 p-4 rounded-2xl bg-secondary/30">
+                <div className="flex flex-col items-center text-center gap-2 p-4 rounded-2xl bg-secondary/30 depth-shadow card-3d-subtle">
                   <RotateCcw className="h-6 w-6 text-primary" />
                   <span className="text-xs font-medium">30 Day Returns</span>
                 </div>
@@ -152,10 +152,10 @@ export default async function ProductPage({ params }: { params: { id: string } }
         {/* Related Products */}
         <div className="mt-20">
           <h2 className="text-2xl font-bold mb-8">You May Also Like</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 perspective-container">
             {relatedProducts.map((related) => (
               <Link key={related.id} href={`/products/${related.id}`}>
-                <Card className="group h-full border-0 bg-card hover:bg-card/80 transition-colors overflow-hidden rounded-2xl shadow-sm hover:shadow-md">
+                <Card className="group h-full border-0 bg-card hover:bg-card/80 transition-colors overflow-hidden rounded-2xl depth-shadow card-3d-subtle shine-effect">
                   <div className="aspect-square relative overflow-hidden bg-secondary/20">
                     <Image
                       src={related.images?.[0] || 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=400'}
